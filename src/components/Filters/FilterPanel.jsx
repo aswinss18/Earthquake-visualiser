@@ -37,7 +37,9 @@ import {
   setDepthRange,
   setLocationFilter,
   resetFilters,
-  toggleAdvancedFilters
+  toggleAdvancedFilters,
+  setShowOnlySignificant,
+  setShowFeltReports
 } from '../../features/filters/filterSlice.js';
 import { TIME_PERIODS } from '../../utils/constants.js';
 
@@ -244,21 +246,7 @@ const FilterPanel = () => {
           {/* Additional Options */}
           <Divider sx={{ my: 2 }} />
           
-          <FormControlLabel
-            control={
-              <Switch 
-                checked={filters.showOnlySignificant}
-                onChange={(e) => dispatch(setShowOnlySignificant(e.target.checked))}
-                size="small"
-              />
-            }
-            label={
-              <Typography variant="body2">
-                Show only significant events
-              </Typography>
-            }
-            sx={{ mb: 1 }}
-          />
+         
           
           <FormControlLabel
             control={
@@ -269,7 +257,7 @@ const FilterPanel = () => {
               />
             }
             label={
-              <Typography variant="body2">
+              <Typography variant="body2" sx={{ fontWeight: 300 }}>
                 Show only felt earthquakes
               </Typography>
             }

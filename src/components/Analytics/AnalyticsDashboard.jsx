@@ -2,7 +2,7 @@
  * Advanced Analytics Dashboard with Charts
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
 import {
   Box,
   Grid,
@@ -12,8 +12,9 @@ import {
   Typography,
   useTheme,
   Skeleton,
-  Chip
-} from '@mui/material';
+  Paper,
+  Chip,
+} from "@mui/material";
 import {
   BarChart,
   Bar,
@@ -32,14 +33,14 @@ import {
   ScatterChart,
   Scatter,
   ZAxis,
-  Legend
-} from 'recharts';
-import { useAppSelector } from '../../app/hooks.js';
+  Legend,
+} from "recharts";
+import { useAppSelector } from "../../app/hooks.js";
 import {
   selectFilteredEarthquakes,
   selectEarthquakesByMagnitude,
-  selectEarthquakeStatistics
-} from '../../features/earthquakes/earthquakeSelectors.js';
+  selectEarthquakeStatistics,
+} from "../../features/earthquakes/earthquakeSelectors.js";
 
 const AnalyticsDashboard = ({ isLoading = false }) => {
   const theme = useTheme();
@@ -56,42 +57,45 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
   };
 
   // Prepare data for magnitude distribution chart
-  const magnitudeData = useMemo(() => [
-    {
-      name: 'Minor (<3.0)',
-      value: earthquakesByMagnitude.minor?.length || 0,
-      color: magnitudeColors.minor,
-    },
-    {
-      name: 'Light (3.0-4.9)',
-      value: earthquakesByMagnitude.light?.length || 0,
-      color: magnitudeColors.light,
-    },
-    {
-      name: 'Moderate (5.0-6.9)',
-      value: earthquakesByMagnitude.moderate?.length || 0,
-      color: magnitudeColors.moderate,
-    },
-    {
-      name: 'Major (≥7.0)',
-      value: earthquakesByMagnitude.major?.length || 0,
-      color: magnitudeColors.major,
-    },
-  ], [earthquakesByMagnitude, magnitudeColors]);
+  const magnitudeData = useMemo(
+    () => [
+      {
+        name: "Minor (<3.0)",
+        value: earthquakesByMagnitude.minor?.length || 0,
+        color: magnitudeColors.minor,
+      },
+      {
+        name: "Light (3.0-4.9)",
+        value: earthquakesByMagnitude.light?.length || 0,
+        color: magnitudeColors.light,
+      },
+      {
+        name: "Moderate (5.0-6.9)",
+        value: earthquakesByMagnitude.moderate?.length || 0,
+        color: magnitudeColors.moderate,
+      },
+      {
+        name: "Major (≥7.0)",
+        value: earthquakesByMagnitude.major?.length || 0,
+        color: magnitudeColors.major,
+      },
+    ],
+    [earthquakesByMagnitude, magnitudeColors]
+  );
 
   // Prepare data for depth distribution
   const depthData = useMemo(() => {
     if (!earthquakes.length) return [];
 
     const ranges = [
-      { name: 'Shallow (0-70km)', min: 0, max: 70 },
-      { name: 'Intermediate (70-300km)', min: 70, max: 300 },
-      { name: 'Deep (>300km)', min: 300, max: Infinity },
+      { name: "Shallow (0-70km)", min: 0, max: 70 },
+      { name: "Intermediate (70-300km)", min: 70, max: 300 },
+      { name: "Deep (>300km)", min: 300, max: Infinity },
     ];
 
-    return ranges.map(range => ({
+    return ranges.map((range) => ({
       name: range.name,
-      count: earthquakes.filter(eq => {
+      count: earthquakes.filter((eq) => {
         const depth = Math.abs(eq.geometry?.coordinates?.[2] || 0);
         return depth >= range.min && depth < range.max;
       }).length,
@@ -107,14 +111,14 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
 
     // Create 24 hour buckets
     for (let i = 23; i >= 0; i--) {
-      const hourStart = now - (i * 60 * 60 * 1000);
-      const hourEnd = hourStart + (60 * 60 * 1000);
-      const label = new Date(hourStart).toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        hour12: false
+      const hourStart = now - i * 60 * 60 * 1000;
+      const hourEnd = hourStart + 60 * 60 * 1000;
+      const label = new Date(hourStart).toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        hour12: false,
       });
 
-      const count = earthquakes.filter(eq => {
+      const count = earthquakes.filter((eq) => {
         const eqTime = eq.properties?.time;
         return eqTime && eqTime >= hourStart && eqTime < hourEnd;
       }).length;
@@ -122,7 +126,7 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
       hours.push({
         time: label,
         count: count,
-        timestamp: hourStart
+        timestamp: hourStart,
       });
     }
 
@@ -134,12 +138,17 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
     if (!earthquakes.length) return [];
 
     return earthquakes
-      .filter(eq => {
+      .filter((eq) => {
         const mag = eq.properties?.mag;
         const depth = Math.abs(eq.geometry?.coordinates?.[2] || 0);
-        return mag !== null && mag !== undefined && depth !== null && depth !== undefined;
+        return (
+          mag !== null &&
+          mag !== undefined &&
+          depth !== null &&
+          depth !== undefined
+        );
       })
-      .map(eq => {
+      .map((eq) => {
         const mag = eq.properties.mag;
         const depth = Math.abs(eq.geometry.coordinates[2]);
 
@@ -154,7 +163,7 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
           depth: depth,
           location: eq.properties.place,
           fill: fill,
-          z: mag // Size of bubble based on magnitude
+          z: mag, // Size of bubble based on magnitude
         };
       })
       .slice(0, 500); // Limit to 500 points for performance
@@ -181,7 +190,7 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
 
   if (!earthquakes.length) {
     return (
-      <Box sx={{ mt: 3, textAlign: 'center', py: 4 }}>
+      <Box sx={{ mt: 3, textAlign: "center", py: 4 }}>
         <Typography variant="h6" color="text.secondary">
           No earthquake data available for analysis
         </Typography>
@@ -206,7 +215,7 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
-                    data={magnitudeData.filter(d => d.value > 0)}
+                    data={magnitudeData.filter((d) => d.value > 0)}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
@@ -274,7 +283,7 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
                   <YAxis />
                   <Tooltip
                     labelFormatter={(value) => `Time: ${value}`}
-                    formatter={(value) => [`${value} earthquakes`, 'Count']}
+                    formatter={(value) => [`${value} earthquakes`, "Count"]}
                   />
                   <Area
                     type="monotone"
@@ -294,7 +303,7 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
           <Card>
             <CardHeader title="Key Insights" />
             <CardContent>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 <Box>
                   <Typography variant="h6" color="primary">
                     {statistics.totalCount}
@@ -306,7 +315,7 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
 
                 <Box>
                   <Typography variant="h6" color="warning.main">
-                    {statistics.averageMagnitude?.toFixed(1) || 'N/A'}
+                    {statistics.averageMagnitude?.toFixed(1) || "N/A"}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     Average Magnitude
@@ -315,7 +324,7 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
 
                 <Box>
                   <Typography variant="h6" color="error.main">
-                    {statistics.maxMagnitude?.toFixed(1) || 'N/A'}
+                    {statistics.maxMagnitude?.toFixed(1) || "N/A"}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     Strongest Event
@@ -325,19 +334,27 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
                 <Box>
                   <Chip
                     label={
-                      earthquakesByMagnitude.major?.length > 0 ? 'High Activity' :
-                      earthquakesByMagnitude.moderate?.length > 5 ? 'Moderate Activity' :
-                      'Low Activity'
+                      earthquakesByMagnitude.major?.length > 0
+                        ? "High Activity"
+                        : earthquakesByMagnitude.moderate?.length > 5
+                        ? "Moderate Activity"
+                        : "Low Activity"
                     }
                     color={
-                      earthquakesByMagnitude.major?.length > 0 ? 'error' :
-                      earthquakesByMagnitude.moderate?.length > 5 ? 'warning' :
-                      'success'
+                      earthquakesByMagnitude.major?.length > 0
+                        ? "error"
+                        : earthquakesByMagnitude.moderate?.length > 5
+                        ? "warning"
+                        : "success"
                     }
                     variant="outlined"
                     size="small"
                   />
-                  <Typography variant="caption" display="block" sx={{ mt: 0.5 }}>
+                  <Typography
+                    variant="caption"
+                    display="block"
+                    sx={{ mt: 0.5 }}
+                  >
                     Current Status
                   </Typography>
                 </Box>
@@ -363,18 +380,39 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
               }
             />
             <CardContent>
-              <Box sx={{ mb: 2, p: 1.5, bgcolor: 'info.lighter', borderRadius: 1, border: '1px solid', borderColor: 'info.main' }}>
-                <Typography variant="body2" color="info.dark" gutterBottom fontWeight={600}>
+              <Box
+                sx={{
+                  mb: 2,
+                  p: 1.5,
+                  bgcolor: "info.lighter",
+                  borderRadius: 1,
+                  border: "1px solid",
+                  borderColor: "info.main",
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  color="info.dark"
+                  gutterBottom
+                  fontWeight={600}
+                >
                   💡 What this chart tells you:
                 </Typography>
-                <Typography variant="caption" color="text.secondary" component="div">
-                  • <strong>Shallow earthquakes (0-70km)</strong>: Most common and most damaging. Found at all plate boundaries.
-                  <br />
-                  • <strong>Intermediate (70-300km)</strong>: Found at subduction zones where oceanic plates dive under continental plates.
-                  <br />
-                  • <strong>Deep earthquakes (300km+)</strong>: Only occur at subduction zones. Less common but can be very powerful.
-                  <br />
-                  • <strong>Pattern to observe</strong>: Subduction zones show earthquakes at ALL depths, while transform/divergent boundaries only have shallow earthquakes.
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  component="div"
+                >
+                  • <strong>Shallow earthquakes (0-70km)</strong>: Most common
+                  and most damaging. Found at all plate boundaries.
+                  <br />• <strong>Intermediate (70-300km)</strong>: Found at
+                  subduction zones where oceanic plates dive under continental
+                  plates.
+                  <br />• <strong>Deep earthquakes (300km+)</strong>: Only occur
+                  at subduction zones. Less common but can be very powerful.
+                  <br />• <strong>Pattern to observe</strong>: Subduction zones
+                  show earthquakes at ALL depths, while transform/divergent
+                  boundaries only have shallow earthquakes.
                 </Typography>
               </Box>
               <ResponsiveContainer width="100%" height={400}>
@@ -387,42 +425,45 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
                     dataKey="magnitude"
                     name="Magnitude"
                     label={{
-                      value: 'Magnitude',
-                      position: 'bottom',
+                      value: "Magnitude",
+                      position: "bottom",
                       offset: 40,
-                      style: { fontSize: 14, fontWeight: 600 }
+                      style: { fontSize: 14, fontWeight: 600 },
                     }}
-                    domain={[0, 'auto']}
+                    domain={[0, "auto"]}
                   />
                   <YAxis
                     type="number"
                     dataKey="depth"
                     name="Depth (km)"
                     label={{
-                      value: 'Depth (km)',
+                      value: "Depth (km)",
                       angle: -90,
-                      position: 'insideLeft',
+                      position: "insideLeft",
                       offset: 10,
-                      style: { fontSize: 14, fontWeight: 600 }
+                      style: { fontSize: 14, fontWeight: 600 },
                     }}
                     reversed={true}
-                    domain={[0, 'auto']}
+                    domain={[0, "auto"]}
                   />
                   <ZAxis type="number" dataKey="z" range={[20, 400]} />
                   <Tooltip
-                    cursor={{ strokeDasharray: '3 3' }}
+                    cursor={{ strokeDasharray: "3 3" }}
                     content={({ active, payload }) => {
                       if (active && payload && payload.length) {
                         const data = payload[0].payload;
                         return (
-                          <Paper sx={{ p: 1.5, bgcolor: 'background.paper' }}>
+                          <Paper sx={{ p: 1.5, bgcolor: "background.paper" }}>
                             <Typography variant="body2" fontWeight={600}>
                               Magnitude: {data.magnitude.toFixed(1)}
                             </Typography>
                             <Typography variant="body2">
                               Depth: {data.depth.toFixed(0)} km
                             </Typography>
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
                               {data.location}
                             </Typography>
                           </Paper>
@@ -435,22 +476,89 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
                     verticalAlign="top"
                     height={36}
                     content={() => (
-                      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 1 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: theme.palette.success.main }} />
-                          <Typography variant="caption">Minor (&lt;3.0)</Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          gap: 2,
+                          mb: 1,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              width: 12,
+                              height: 12,
+                              borderRadius: "50%",
+                              bgcolor: theme.palette.success.main,
+                            }}
+                          />
+                          <Typography variant="caption">
+                            Minor (&lt;3.0)
+                          </Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: theme.palette.warning.main }} />
-                          <Typography variant="caption">Light (3.0-4.9)</Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              width: 12,
+                              height: 12,
+                              borderRadius: "50%",
+                              bgcolor: theme.palette.warning.main,
+                            }}
+                          />
+                          <Typography variant="caption">
+                            Light (3.0-4.9)
+                          </Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: theme.palette.error.main }} />
-                          <Typography variant="caption">Moderate (5.0-6.9)</Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              width: 12,
+                              height: 12,
+                              borderRadius: "50%",
+                              bgcolor: theme.palette.error.main,
+                            }}
+                          />
+                          <Typography variant="caption">
+                            Moderate (5.0-6.9)
+                          </Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: theme.palette.error.dark }} />
-                          <Typography variant="caption">Major (≥7.0)</Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              width: 12,
+                              height: 12,
+                              borderRadius: "50%",
+                              bgcolor: theme.palette.error.dark,
+                            }}
+                          />
+                          <Typography variant="caption">
+                            Major (≥7.0)
+                          </Typography>
                         </Box>
                       </Box>
                     )}
