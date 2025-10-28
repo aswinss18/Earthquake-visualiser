@@ -16,7 +16,6 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks.js';
 import { selectFilteredEarthquakes } from '../../features/earthquakes/earthquakeSelectors.js';
 import { updateMapView } from '../../features/map/mapSlice.js';
 import EarthquakeMarkers from './EarthquakeMarkers.jsx';
-import MapLegend from './MapLegend.jsx';
 import TectonicPlatesOverlay from './TectonicPlatesOverlay.jsx';
 
 // Fix for default markers in react-leaflet
@@ -216,8 +215,7 @@ const LeafletMap = ({ height = '500px' }) => {
         <UserLocationControl />
       </MapContainer>
 
-      {/* Map Legend */}
-      <MapLegend />
+      {/* Map Legend - Now integrated into TectonicPlatesOverlay */}
 
       {/* Loading overlay */}
       {earthquakes.length === 0 && (

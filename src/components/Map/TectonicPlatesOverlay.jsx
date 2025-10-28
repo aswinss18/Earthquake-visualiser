@@ -12,6 +12,7 @@ import {
   ExpandMore as ExpandMoreIcon
 } from '@mui/icons-material';
 import L from 'leaflet';
+import { MAGNITUDE_COLORS } from '../../utils/constants.js';
 
 const TectonicPlatesOverlay = ({ visible = true }) => {
   const map = useMap();
@@ -119,18 +120,16 @@ const TectonicPlatesOverlay = ({ visible = true }) => {
     });
   };
 
-  if (!visible || loading || error || !platesData) {
-    return null;
-  }
-
   return (
     <>
-      {/* GeoJSON Layer */}
-      <GeoJSON
-        data={platesData}
-        style={getPlateStyle}
-        onEachFeature={onEachFeature}
-      />
+      {/* GeoJSON Layer - only show when visible and data is loaded */}
+      {visible && !loading && !error && platesData && (
+        <GeoJSON
+          data={platesData}
+          style={getPlateStyle}
+          onEachFeature={onEachFeature}
+        />
+      )}
 
       {/* Educational Legend */}
       <Box
@@ -139,16 +138,19 @@ const TectonicPlatesOverlay = ({ visible = true }) => {
           bottom: 16,
           left: 16,
           zIndex: 1000,
-          maxWidth: 300
+          maxWidth: 350,
+          minWidth: 280
         }}
       >
         <Paper
           elevation={3}
           sx={{
-            p: 2,
+            p: 2.5,
             bgcolor: 'background.paper',
             backdropFilter: 'blur(10px)',
-            borderRadius: 2
+            borderRadius: 2,
+            maxHeight: '70vh',
+            overflow: 'auto'
           }}
         >
           {/* Legend Header */}
@@ -176,84 +178,170 @@ const TectonicPlatesOverlay = ({ visible = true }) => {
 
           {/* Legend Content */}
           <Collapse in={legendExpanded}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 1 }}>
-              {/* Convergent Boundaries */}
-              <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                  <Box
-                    sx={{
-                      width: 40,
-                      height: 3,
-                      bgcolor: '#DC143C',
-                      borderRadius: 1,
-                      backgroundImage: 'repeating-linear-gradient(90deg, #DC143C 0px, #DC143C 10px, transparent 10px, transparent 15px)'
-                    }}
-                  />
-                  <Typography variant="caption" fontWeight={600}>
-                    Convergent
-                  </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1.5 }}>
+              {/* Show tectonic boundaries info only when visible and data loaded */}
+              {visible && !loading && !error && platesData && (
+                <>
+                  {/* Convergent Boundaries */}
+                  <Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+                      <Box
+                        sx={{
+                          width: 40,
+                          height: 3,
+                          bgcolor: '#DC143C',
+                          borderRadius: 1,
+                          backgroundImage: 'repeating-linear-gradient(90deg, #DC143C 0px, #DC143C 10px, transparent 10px, transparent 15px)',
+                          flexShrink: 0
+                        }}
+                      />
+                      <Typography variant="body2" fontWeight={600}>
+                        Convergent
+                      </Typography>
+                    </Box>
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary" 
+                      sx={{ 
+                        fontSize: '0.8rem',
+                        lineHeight: 1.4,
+                        ml: 0.5
+                      }}
+                    >
+                      Plates collide. Subduction zones & mountains. Deep & powerful earthquakes.
+                    </Typography>
+                  </Box>
+
+                  {/* Divergent Boundaries */}
+                  <Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+                      <Box
+                        sx={{
+                          width: 40,
+                          height: 3,
+                          bgcolor: '#4169E1',
+                          borderRadius: 1,
+                          backgroundImage: 'repeating-linear-gradient(90deg, #4169E1 0px, #4169E1 5px, transparent 5px, transparent 15px)',
+                          flexShrink: 0
+                        }}
+                      />
+                      <Typography variant="body2" fontWeight={600}>
+                        Divergent
+                      </Typography>
+                    </Box>
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary" 
+                      sx={{ 
+                        fontSize: '0.8rem',
+                        lineHeight: 1.4,
+                        ml: 0.5
+                      }}
+                    >
+                      Plates separate. Mid-ocean ridges. Minor earthquakes, new crust forms.
+                    </Typography>
+                  </Box>
+
+                  {/* Transform Boundaries */}
+                  <Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+                      <Box
+                        sx={{
+                          width: 40,
+                          height: 3,
+                          bgcolor: '#FFD700',
+                          borderRadius: 1,
+                          backgroundImage: 'repeating-linear-gradient(90deg, #FFD700 0px, #FFD700 15px, transparent 15px, transparent 20px, #FFD700 20px, #FFD700 25px, transparent 25px, transparent 30px)',
+                          flexShrink: 0
+                        }}
+                      />
+                      <Typography variant="body2" fontWeight={600}>
+                        Transform
+                      </Typography>
+                    </Box>
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary" 
+                      sx={{ 
+                        fontSize: '0.8rem',
+                        lineHeight: 1.4,
+                        ml: 0.5
+                      }}
+                    >
+                      Plates slide past each other. Frequent shallow earthquakes. Ex: San Andreas Fault.
+                    </Typography>
+                  </Box>
+                </>
+              )}
+
+              {/* Magnitude Scale Section */}
+              <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+                <Typography variant="subtitle2" fontWeight={600} sx={{ mb: 1.5 }}>
+                  Magnitude Scale
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  {[
+                    { range: '< 3.0', color: MAGNITUDE_COLORS.MINOR, label: 'Minor' },
+                    { range: '3.0 - 4.9', color: MAGNITUDE_COLORS.LIGHT, label: 'Light' },
+                    { range: '5.0 - 5.9', color: MAGNITUDE_COLORS.MODERATE, label: 'Moderate' },
+                    { range: '6.0 - 6.9', color: MAGNITUDE_COLORS.STRONG, label: 'Strong' },
+                    { range: '7.0+', color: MAGNITUDE_COLORS.MAJOR, label: 'Major' }
+                  ].map((item, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1.5
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: 16,
+                          height: 16,
+                          borderRadius: '50%',
+                          bgcolor: item.color,
+                          border: '2px solid white',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+                          flexShrink: 0
+                        }}
+                      />
+                      <Typography variant="body2" sx={{ fontSize: '0.8rem', lineHeight: 1.3 }}>
+                        <strong>{item.range}</strong> - {item.label}
+                      </Typography>
+                    </Box>
+                  ))}
                 </Box>
-                <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-                  Plates collide. Subduction zones &amp; mountains. Deep &amp; powerful earthquakes.
+                <Typography 
+                  variant="caption" 
+                  color="text.secondary" 
+                  sx={{ 
+                    fontSize: '0.75rem',
+                    mt: 1.5,
+                    display: 'block',
+                    fontStyle: 'italic'
+                  }}
+                >
+                  Circle size indicates magnitude strength
                 </Typography>
               </Box>
 
-              {/* Divergent Boundaries */}
-              <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                  <Box
-                    sx={{
-                      width: 40,
-                      height: 3,
-                      bgcolor: '#4169E1',
-                      borderRadius: 1,
-                      backgroundImage: 'repeating-linear-gradient(90deg, #4169E1 0px, #4169E1 5px, transparent 5px, transparent 15px)'
-                    }}
-                  />
-                  <Typography variant="caption" fontWeight={600}>
-                    Divergent
+              {/* Educational Note - only show when tectonic plates are visible */}
+              {visible && !loading && !error && platesData && (
+                <Box
+                  sx={{
+                    mt: 2,
+                    p: 1.5,
+                    bgcolor: 'primary.main',
+                    color: 'primary.contrastText',
+                    borderRadius: 1
+                  }}
+                >
+                  <Typography variant="body2" sx={{ fontSize: '0.8rem', fontWeight: 500 }}>
+                    💡 Click on any boundary line to zoom in and learn more about it!
                   </Typography>
                 </Box>
-                <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-                  Plates separate. Mid-ocean ridges. Minor earthquakes, new crust forms.
-                </Typography>
-              </Box>
-
-              {/* Transform Boundaries */}
-              <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                  <Box
-                    sx={{
-                      width: 40,
-                      height: 3,
-                      bgcolor: '#FFD700',
-                      borderRadius: 1,
-                      backgroundImage: 'repeating-linear-gradient(90deg, #FFD700 0px, #FFD700 15px, transparent 15px, transparent 20px, #FFD700 20px, #FFD700 25px, transparent 25px, transparent 30px)'
-                    }}
-                  />
-                  <Typography variant="caption" fontWeight={600}>
-                    Transform
-                  </Typography>
-                </Box>
-                <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-                  Plates slide past each other. Frequent shallow earthquakes. Ex: San Andreas Fault.
-                </Typography>
-              </Box>
-
-              {/* Educational Note */}
-              <Box
-                sx={{
-                  mt: 1,
-                  p: 1,
-                  bgcolor: 'primary.main',
-                  color: 'primary.contrastText',
-                  borderRadius: 1
-                }}
-              >
-                <Typography variant="caption" sx={{ fontSize: '0.65rem', fontWeight: 500 }}>
-                  💡 Click on any boundary line to zoom in and learn more about it!
-                </Typography>
-              </Box>
+              )}
             </Box>
           </Collapse>
         </Paper>
