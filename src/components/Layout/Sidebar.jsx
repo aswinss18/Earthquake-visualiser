@@ -27,9 +27,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import InfoIcon from '@mui/icons-material/Info';
 import FilterIcon from '@mui/icons-material/FilterList';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PublicIcon from '@mui/icons-material/Public';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -83,12 +81,6 @@ const secondaryItems = [
     label: 'Settings',
     icon: <SettingsIcon />,
     description: 'App preferences'
-  },
-  {
-    id: 'about',
-    label: 'About',
-    icon: <InfoIcon />,
-    description: 'Information & help'
   }
 ];
 
@@ -211,7 +203,8 @@ const Sidebar = ({
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
-      bgcolor: 'background.paper'
+      bgcolor: 'background.paper',
+      overflow: 'hidden'
     }}>
       {/* Header */}
       <Box sx={{
@@ -254,7 +247,7 @@ const Sidebar = ({
       <Divider />
 
       {/* Main Navigation */}
-      <Box sx={{ flex: 1, py: 1 }}>
+      <Box sx={{ flex: 1, py: 1, overflow: 'hidden' }}>
         <List component="nav" sx={{ px: 0 }}>
           {navigationItems.map(renderNavigationItem)}
         </List>
@@ -267,29 +260,7 @@ const Sidebar = ({
         </List>
       </Box>
 
-      {/* Footer */}
-      {!collapsed && (
-        <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
-          <Box sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            p: 1,
-            bgcolor: 'action.hover',
-            borderRadius: 1
-          }}>
-            <TrendingUpIcon color="primary" fontSize="small" />
-            <Box>
-              <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                Live Status
-              </Typography>
-              <Typography variant="caption" color="success.main">
-                All systems operational
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-      )}
+
     </Box>
   );
 

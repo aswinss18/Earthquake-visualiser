@@ -174,8 +174,7 @@ function App() {
     <Box sx={{
       display: 'flex',
       height: '100vh',
-      bgcolor: 'background.default',
-      overflow: 'hidden'
+      bgcolor: 'background.default'
     }}>
       {/* Sidebar */}
       <Sidebar
@@ -200,8 +199,7 @@ function App() {
             duration: theme.transitions.duration.leavingScreen,
           }),
           minWidth: 0,
-          height: '100vh',
-          overflow: 'hidden'
+          height: '100vh'
         }}
       >
         {/* Top App Bar */}
@@ -290,7 +288,7 @@ function App() {
           component="main"
           sx={{
             flexGrow: 1,
-            overflow: 'hidden',
+            overflow: 'auto',
             display: 'flex',
             flexDirection: 'column'
           }}
