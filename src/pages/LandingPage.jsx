@@ -38,11 +38,9 @@ import {
   PlayArrow as PlayIcon,
   Dashboard as DashboardIcon,
   Search as SearchIcon,
-  Bookmark as BookmarkIcon,
-  Settings as SettingsIcon,
-  FilterList as FilterIcon,
-  LocationOn as LocationIcon
+  Bookmark as BookmarkIcon
 } from '@mui/icons-material';
+import SimpleGlobe3D from '../components/SimpleGlobe3D';
 
 const LandingPage = ({ onGetStarted }) => {
   const theme = useTheme();
@@ -324,7 +322,7 @@ const LandingPage = ({ onGetStarted }) => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  height: { xs: 300, md: 500 },
+                  height: { xs: 400, md: 500 },
                   position: 'relative'
                 }}
               >
@@ -332,77 +330,26 @@ const LandingPage = ({ onGetStarted }) => {
                 <Box
                   sx={{
                     position: 'absolute',
-                    width: 400,
-                    height: 400,
+                    width: 450,
+                    height: 450,
                     borderRadius: '50%',
-                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1))',
-                    animation: 'pulse 4s ease-in-out infinite',
-                    '@keyframes pulse': {
-                      '0%, 100%': { transform: 'scale(1)', opacity: 0.7 },
-                      '50%': { transform: 'scale(1.05)', opacity: 0.4 }
-                    }
+                  
                   }}
                 />
                 
-                {/* Main earth visualization */}
+                {/* 3D Globe */}
                 <Box
                   sx={{
-                    width: 280,
-                    height: 280,
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    width: { xs: 350, md: 400 },
+                    height: { xs: 350, md: 400 },
                     position: 'relative',
-                    border: '1px solid #e5e7eb',
-                    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.15)',
-                    zIndex: 2
+                    zIndex: 2,
+                    borderRadius: 2,
+                    overflow: 'hidden',
+              
                   }}
                 >
-                  <EarthIcon sx={{ fontSize: 120, color: '#3b82f6' }} />
-                  
-                  {/* Floating elements */}
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: 20,
-                      right: 20,
-                      width: 12,
-                      height: 12,
-                      borderRadius: '50%',
-                      bgcolor: '#ef4444',
-                      animation: 'bounce 2s ease-in-out infinite',
-                      '@keyframes bounce': {
-                        '0%, 100%': { transform: 'translateY(0px)' },
-                        '50%': { transform: 'translateY(-10px)' }
-                      }
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      bottom: 30,
-                      left: 30,
-                      width: 8,
-                      height: 8,
-                      borderRadius: '50%',
-                      bgcolor: '#f59e0b',
-                      animation: 'bounce 2s ease-in-out infinite 0.5s'
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: 60,
-                      left: 10,
-                      width: 6,
-                      height: 6,
-                      borderRadius: '50%',
-                      bgcolor: '#10b981',
-                      animation: 'bounce 2s ease-in-out infinite 1s'
-                    }}
-                  />
+                  <SimpleGlobe3D />
                 </Box>
               </Box>
             </Slide>
