@@ -85,11 +85,14 @@ const DashboardPage = ({ onEarthquakeSelect }) => {
                 Last hour earthquakes
               </Typography>
 
-              <Box sx={{
-                maxHeight: '500px',
-                overflow: 'auto',
-                mt: 2
-              }}>
+              <Box 
+                className="scrollbar-minimal"
+                sx={{
+                  maxHeight: '500px',
+                  overflow: 'auto',
+                  mt: 2
+                }}
+              >
                 {recentEarthquakes.length === 0 ? (
                   <Box sx={{
                     textAlign: 'center',

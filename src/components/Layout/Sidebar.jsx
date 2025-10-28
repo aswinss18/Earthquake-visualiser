@@ -2,7 +2,7 @@
  * Modern Sidebar Navigation Component
  */
 
-import React from 'react';
+import React from "react";
 import {
   Drawer,
   Box,
@@ -18,70 +18,71 @@ import {
   useTheme,
   useMediaQuery,
   Tooltip,
-  Avatar
-} from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import AnalyticsIcon from '@mui/icons-material/Analytics';
-import MapIcon from '@mui/icons-material/Map';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import SearchIcon from '@mui/icons-material/Search';
-import SettingsIcon from '@mui/icons-material/Settings';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import FilterIcon from '@mui/icons-material/FilterList';
-import PublicIcon from '@mui/icons-material/Public';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useAppSelector } from '../../app/hooks.js';
+  Avatar,
+} from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
+import MapIcon from "@mui/icons-material/Map";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import SearchIcon from "@mui/icons-material/Search";
+import SettingsIcon from "@mui/icons-material/Settings";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+
+import PublicIcon from "@mui/icons-material/Public";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import MenuIcon from "@mui/icons-material/Menu";
+
+import { useAppSelector } from "../../app/hooks.js";
 
 const SIDEBAR_WIDTH = 280;
 const SIDEBAR_WIDTH_COLLAPSED = 72;
 
 const navigationItems = [
   {
-    id: 'dashboard',
-    label: 'Dashboard',
+    id: "dashboard",
+    label: "Dashboard",
     icon: <DashboardIcon />,
-    description: 'Live earthquake monitoring'
+    description: "Live earthquake monitoring",
   },
   {
-    id: 'map',
-    label: 'Interactive Map',
+    id: "map",
+    label: "Interactive Map",
     icon: <MapIcon />,
-    description: 'Global earthquake visualization'
+    description: "Global earthquake visualization",
   },
   {
-    id: 'analytics',
-    label: 'Analytics',
+    id: "analytics",
+    label: "Analytics",
     icon: <AnalyticsIcon />,
-    description: 'Charts and statistics'
+    description: "Charts and statistics",
   },
   {
-    id: 'search',
-    label: 'Search & Filter',
+    id: "search",
+    label: "Search & Filter",
     icon: <SearchIcon />,
-    description: 'Find specific earthquakes'
+    description: "Find specific earthquakes",
   },
   {
-    id: 'bookmarks',
-    label: 'Bookmarks',
+    id: "bookmarks",
+    label: "Bookmarks",
     icon: <BookmarkIcon />,
-    description: 'Saved earthquakes'
+    description: "Saved earthquakes",
   },
   {
-    id: 'notifications',
-    label: 'Alerts',
+    id: "notifications",
+    label: "Alerts",
     icon: <NotificationsIcon />,
-    description: 'Real-time notifications'
-  }
+    description: "Real-time notifications",
+  },
 ];
 
 const secondaryItems = [
   {
-    id: 'settings',
-    label: 'Settings',
+    id: "settings",
+    label: "Settings",
     icon: <SettingsIcon />,
-    description: 'App preferences'
-  }
+    description: "App preferences",
+  },
 ];
 
 const Sidebar = ({
@@ -91,14 +92,14 @@ const Sidebar = ({
   onPageChange,
   collapsed = false,
   onToggleCollapsed,
-  bookmarkCount = 0
+  bookmarkCount = 0,
 }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   // Get statistics for badges
-  const earthquakes = useAppSelector(state => state.earthquakes);
-  const filters = useAppSelector(state => state.filters);
+  const earthquakes = useAppSelector((state) => state.earthquakes);
+  const filters = useAppSelector((state) => state.filters);
   const activeFilterCount = filters.activeFilterCount || 0;
 
   const sidebarWidth = collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH;
@@ -115,13 +116,13 @@ const Sidebar = ({
 
     // Determine badge content
     let badgeContent = null;
-    if (item.id === 'bookmarks' && bookmarkCount > 0) {
+    if (item.id === "bookmarks" && bookmarkCount > 0) {
       badgeContent = bookmarkCount;
     }
-    if (item.id === 'search' && activeFilterCount > 0) {
+    if (item.id === "search" && activeFilterCount > 0) {
       badgeContent = activeFilterCount;
     }
-    if (item.id === 'notifications' && earthquakes.recentAlerts > 0) {
+    if (item.id === "notifications" && earthquakes.recentAlerts > 0) {
       badgeContent = earthquakes.recentAlerts;
     }
 
@@ -132,23 +133,23 @@ const Sidebar = ({
           selected={isActive}
           sx={{
             minHeight: 48,
-            justifyContent: collapsed ? 'center' : 'initial',
+            justifyContent: collapsed ? "center" : "initial",
             px: 2.5,
             borderRadius: 2,
             mx: 1,
             mb: 0.5,
-            '&.Mui-selected': {
-              bgcolor: 'primary.main',
-              color: 'primary.contrastText',
-              '&:hover': {
-                bgcolor: 'primary.dark',
+            "&.Mui-selected": {
+              bgcolor: "primary.main",
+              color: "primary.contrastText",
+              "&:hover": {
+                bgcolor: "primary.dark",
               },
-              '& .MuiListItemIcon-root': {
-                color: 'primary.contrastText',
+              "& .MuiListItemIcon-root": {
+                color: "primary.contrastText",
               },
             },
-            '&:hover': {
-              bgcolor: isActive ? 'primary.main' : 'action.hover',
+            "&:hover": {
+              bgcolor: isActive ? "primary.main" : "action.hover",
             },
           }}
         >
@@ -156,7 +157,7 @@ const Sidebar = ({
             sx={{
               minWidth: 0,
               mr: collapsed ? 0 : 3,
-              justifyContent: 'center',
+              justifyContent: "center",
             }}
           >
             <Badge badgeContent={badgeContent} color="error">
@@ -184,12 +185,7 @@ const Sidebar = ({
 
     if (collapsed) {
       return (
-        <Tooltip
-          key={item.id}
-          title={item.label}
-          placement="right"
-          arrow
-        >
+        <Tooltip key={item.id} title={item.label} placement="right" arrow>
           {listItem}
         </Tooltip>
       );
@@ -199,24 +195,28 @@ const Sidebar = ({
   };
 
   const sidebarContent = (
-    <Box sx={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      bgcolor: 'background.paper',
-      overflow: 'hidden'
-    }}>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        bgcolor: "background.paper",
+        overflow: "hidden",
+      }}
+    >
       {/* Header */}
-      <Box sx={{
-        p: collapsed ? 1 : 2,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: collapsed ? 'center' : 'space-between',
-        minHeight: 64
-      }}>
+      <Box
+        sx={{
+          p: collapsed ? 1 : 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: collapsed ? "center" : "space-between",
+          minHeight: 64,
+        }}
+      >
         {!collapsed && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Avatar sx={{ bgcolor: "primary.main", width: 32, height: 32 }}>
               <PublicIcon fontSize="small" />
             </Avatar>
             <Box>
@@ -230,24 +230,34 @@ const Sidebar = ({
           </Box>
         )}
 
+        {collapsed && (
+          <Avatar sx={{ bgcolor: "primary.main", width: 32, height: 32 }}>
+            <PublicIcon fontSize="small" />
+          </Avatar>
+        )}
+
         {!isMobile && (
-          <IconButton
-            onClick={onToggleCollapsed}
-            size="small"
-            sx={{
-              alignSelf: collapsed ? 'center' : 'flex-end',
-              color: 'text.secondary'
-            }}
-          >
-            {collapsed ? <MenuIcon /> : <MenuOpenIcon />}
-          </IconButton>
+          <Tooltip title={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
+            <IconButton
+              onClick={onToggleCollapsed}
+              size="small"
+              sx={{
+                color: "text.secondary",
+              }}
+            >
+              {collapsed ? <MenuIcon /> : <MenuOpenIcon />}
+            </IconButton>
+          </Tooltip>
         )}
       </Box>
 
       <Divider />
 
       {/* Main Navigation */}
-      <Box sx={{ flex: 1, py: 1, overflow: 'hidden' }}>
+      <Box
+        className="scrollbar-minimal"
+        sx={{ flex: 1, py: 1, overflow: "auto" }}
+      >
         <List component="nav" sx={{ px: 0 }}>
           {navigationItems.map(renderNavigationItem)}
         </List>
@@ -259,8 +269,6 @@ const Sidebar = ({
           {secondaryItems.map(renderNavigationItem)}
         </List>
       </Box>
-
-
     </Box>
   );
 
@@ -274,8 +282,8 @@ const Sidebar = ({
         PaperProps={{
           sx: {
             width: SIDEBAR_WIDTH,
-            bgcolor: 'background.paper'
-          }
+            bgcolor: "background.paper",
+          },
         }}
       >
         {sidebarContent}
@@ -290,14 +298,14 @@ const Sidebar = ({
       PaperProps={{
         sx: {
           width: sidebarWidth,
-          bgcolor: 'background.paper',
+          bgcolor: "background.paper",
           borderRight: 1,
-          borderColor: 'divider',
-          transition: theme.transitions.create('width', {
+          borderColor: "divider",
+          transition: theme.transitions.create("width", {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
           }),
-        }
+        },
       }}
     >
       {sidebarContent}

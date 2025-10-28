@@ -111,6 +111,7 @@ const DetailsPanel = () => {
   return (
     <Paper
       elevation={3}
+      className="scrollbar-minimal"
       sx={{
         height: "fit-content",
         position: "sticky",

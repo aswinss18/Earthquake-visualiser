@@ -70,44 +70,10 @@ export const educationalContent = {
       <strong>Key Insight:</strong> If you observe earthquakes at ALL depth ranges in a region,
       you're likely looking at a subduction zone!
     `,
-    relatedTopics: ['Subduction Zones', 'Hypocenter', 'Plate Tectonics']
+    relatedTopics: ['Subduction Zones', 'Hypocenter', 'Seismic Waves']
   },
 
-  tectonicPlates: {
-    title: 'Tectonic Plate Boundaries',
-    shortDescription: 'Understanding where and why earthquakes occur',
-    content: `
-      <strong>The Three Types of Boundaries:</strong>
-      <br/><br/>
-      <strong>1. Convergent Boundaries (Colliding):</strong>
-      <ul>
-        <li>Plates move toward each other</li>
-        <li>Forms: Subduction zones, mountain ranges, ocean trenches</li>
-        <li>Earthquakes: All depths (0-700 km), very powerful</li>
-        <li>Examples: Pacific Ring of Fire, Himalayas</li>
-      </ul>
-      <br/>
-      <strong>2. Divergent Boundaries (Separating):</strong>
-      <ul>
-        <li>Plates move apart from each other</li>
-        <li>Forms: Mid-ocean ridges, rift valleys</li>
-        <li>Earthquakes: Shallow only, generally minor</li>
-        <li>Examples: Mid-Atlantic Ridge, East African Rift</li>
-      </ul>
-      <br/>
-      <strong>3. Transform Boundaries (Sliding):</strong>
-      <ul>
-        <li>Plates slide horizontally past each other</li>
-        <li>Forms: Strike-slip faults</li>
-        <li>Earthquakes: Shallow only, can be very powerful</li>
-        <li>Examples: San Andreas Fault, Anatolian Fault</li>
-      </ul>
-      <br/>
-      <strong>💡 Student Tip:</strong> Use the tectonic plates overlay on the map to see how earthquake
-      locations correlate with plate boundaries!
-    `,
-    relatedTopics: ['Subduction', 'Mid-Ocean Ridges', 'Transform Faults']
-  },
+
 
   ringOfFire: {
     title: 'Pacific Ring of Fire',

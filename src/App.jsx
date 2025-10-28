@@ -104,13 +104,9 @@ function App() {
     setDetailsModalOpen(true);
   };
 
-  // Handle sidebar toggle
+  // Handle sidebar toggle (mobile only)
   const handleSidebarToggle = () => {
-    if (isMobile) {
-      setSidebarOpen(!sidebarOpen);
-    } else {
-      setSidebarCollapsed(!sidebarCollapsed);
-    }
+    setSidebarOpen(!sidebarOpen);
   };
 
   // Handle page change
@@ -270,15 +266,6 @@ function App() {
                   {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
                 </IconButton>
               </Tooltip>
-
-              {/* Desktop Menu Toggle */}
-              {!isMobile && (
-                <Tooltip title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
-                  <IconButton color="inherit" onClick={handleSidebarToggle}>
-                    <MenuIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
             </Box>
           </Toolbar>
         </AppBar>
@@ -286,6 +273,7 @@ function App() {
         {/* Page Content */}
         <Box
           component="main"
+          className="scrollbar-minimal"
           sx={{
             flexGrow: 1,
             overflow: 'auto',

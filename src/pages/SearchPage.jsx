@@ -23,12 +23,15 @@ const SearchPage = ({ onEarthquakeSelect }) => {
   const earthquakes = useAppSelector(selectFilteredEarthquakes);
 
   return (
-    <Box sx={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      overflow: 'auto'
-    }}>
+    <Box 
+      className="scrollbar-minimal"
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'auto'
+      }}
+    >
       {/* Page Header */}
       <Box sx={{ p: 2, pb: 1 }}>
         <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary' }}>
@@ -45,7 +48,10 @@ const SearchPage = ({ onEarthquakeSelect }) => {
       </Box>
 
       {/* Main Content */}
-      <Box sx={{ flex: 1, p: 2, pt: 0, overflow: 'auto' }}>
+      <Box 
+        className="scrollbar-minimal"
+        sx={{ flex: 1, p: 2, pt: 0, overflow: 'auto' }}
+      >
         <Grid container spacing={3} sx={{ height: '100%' }}>
           {/* Filter Panel */}
           <Grid item xs={12} md={4} lg={3}>
