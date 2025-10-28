@@ -26,7 +26,6 @@ import MapIcon from "@mui/icons-material/Map";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import SearchIcon from "@mui/icons-material/Search";
 import SettingsIcon from "@mui/icons-material/Settings";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import PublicIcon from "@mui/icons-material/Public";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
@@ -67,12 +66,6 @@ const navigationItems = [
     label: "Bookmarks",
     icon: <BookmarkIcon />,
     description: "Saved earthquakes",
-  },
-  {
-    id: "notifications",
-    label: "Alerts",
-    icon: <NotificationsIcon />,
-    description: "Real-time notifications",
   },
 ];
 
@@ -121,9 +114,6 @@ const Sidebar = ({
     }
     if (item.id === "search" && activeFilterCount > 0) {
       badgeContent = activeFilterCount;
-    }
-    if (item.id === "notifications" && earthquakes.recentAlerts > 0) {
-      badgeContent = earthquakes.recentAlerts;
     }
 
     const listItem = (
@@ -205,16 +195,16 @@ const Sidebar = ({
       }}
     >
       {/* Header */}
-      <Box
-        sx={{
-          p: collapsed ? 1 : 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: collapsed ? "center" : "space-between",
-          minHeight: 64,
-        }}
-      >
-        {!collapsed && (
+      {!collapsed && (
+        <Box
+          sx={{
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            minHeight: 64,
+          }}
+        >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Avatar sx={{ bgcolor: "primary.main", width: 32, height: 32 }}>
               <PublicIcon fontSize="small" />
@@ -228,16 +218,35 @@ const Sidebar = ({
               </Typography>
             </Box>
           </Box>
-        )}
 
-        {collapsed && (
-          <Avatar sx={{ bgcolor: "primary.main", width: 32, height: 32 }}>
-            <PublicIcon fontSize="small" />
-          </Avatar>
-        )}
+          {!isMobile && (
+            <Tooltip title="Collapse sidebar">
+              <IconButton
+                onClick={onToggleCollapsed}
+                size="small"
+                sx={{
+                  color: "text.secondary",
+                }}
+              >
+                <MenuOpenIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Box>
+      )}
 
-        {!isMobile && (
-          <Tooltip title={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
+      {/* Collapsed Header - Toggle Button Only */}
+      {collapsed && !isMobile && (
+        <Box
+          sx={{
+            p: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: 64,
+          }}
+        >
+          <Tooltip title="Expand sidebar">
             <IconButton
               onClick={onToggleCollapsed}
               size="small"
@@ -245,11 +254,11 @@ const Sidebar = ({
                 color: "text.secondary",
               }}
             >
-              {collapsed ? <MenuIcon /> : <MenuOpenIcon />}
+              <MenuIcon />
             </IconButton>
           </Tooltip>
-        )}
-      </Box>
+        </Box>
+      )}
 
       <Divider />
 
@@ -261,11 +270,12 @@ const Sidebar = ({
         <List component="nav" sx={{ px: 0 }}>
           {navigationItems.map(renderNavigationItem)}
         </List>
+      </Box>
 
-        <Divider sx={{ mx: 2, my: 2 }} />
-
-        {/* Secondary Navigation */}
-        <List component="nav" sx={{ px: 0 }}>
+      {/* Settings at Bottom */}
+      <Box sx={{ mt: "auto" }}>
+        <Divider sx={{ mx: 2, mb: 1 }} />
+        <List component="nav" sx={{ px: 0, pb: 1 }}>
           {secondaryItems.map(renderNavigationItem)}
         </List>
       </Box>

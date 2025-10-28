@@ -6,14 +6,15 @@ import React, { useEffect, useRef } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.markercluster';
-import { useAppDispatch } from '../../app/hooks.js';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.js';
 import { selectEarthquake } from '../../features/earthquakes/earthquakeSlice.js';
-import { getMagnitudeColor, getMagnitudeSize } from '../../utils/calculations.js';
+import { getMagnitudeColor, getMagnitudeSize, calculateDistance } from '../../utils/calculations.js';
 import { formatMagnitude, formatDateTime, formatLocation } from '../../utils/formatters.js';
 
 const EarthquakeMarkers = ({ earthquakes = [] }) => {
   const map = useMap();
   const dispatch = useAppDispatch();
+  const userLocation = useAppSelector(state => state.map.userLocation);
   const markersRef = useRef(null);
   const clusterGroupRef = useRef(null);
 
@@ -61,6 +62,17 @@ const EarthquakeMarkers = ({ earthquakes = [] }) => {
         className: 'earthquake-marker'
       });
 
+      // Calculate distance from user location if available
+      let distanceFromUser = null;
+      if (userLocation) {
+        distanceFromUser = calculateDistance(
+          userLocation.lat,
+          userLocation.lng,
+          coordinates.lat,
+          coordinates.lng
+        );
+      }
+
       // Create popup content
       const popupContent = `
         <div class="earthquake-popup">
@@ -76,6 +88,17 @@ const EarthquakeMarkers = ({ earthquakes = [] }) => {
             <p style="margin: 8px 0; font-weight: 500;">
               📍 ${formatLocation(location)}
             </p>
+            ${distanceFromUser ? `
+              <div style="margin: 8px 0; padding: 6px; background: #e3f2fd; border-radius: 4px; border-left: 3px solid #2196f3;">
+                <strong style="color: #1976d2;">📍 Distance from you:</strong><br>
+                <span style="color: #1976d2; font-weight: 500;">
+                  ${distanceFromUser < 1 ? 
+                    `${(distanceFromUser * 1000).toFixed(0)} meters` : 
+                    `${distanceFromUser.toFixed(1)} km`
+                  }
+                </span>
+              </div>
+            ` : ''}
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0;">
               <div>
                 <strong>Depth:</strong><br>
@@ -143,7 +166,7 @@ const EarthquakeMarkers = ({ earthquakes = [] }) => {
         map.removeLayer(clusterGroupRef.current);
       }
     };
-  }, [earthquakes, map, dispatch]);
+  }, [earthquakes, map, dispatch, userLocation]);
 
   // Add custom CSS for markers and popups
   useEffect(() => {

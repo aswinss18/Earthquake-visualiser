@@ -4,8 +4,13 @@
 
 import React, { useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
-import { Box, Paper, Fab, Tooltip, Typography } from '@mui/material';
-import { MyLocation as MyLocationIcon, Layers as LayersIcon } from '@mui/icons-material';
+import { Box, Paper, Fab, Tooltip, Typography, Snackbar, Alert } from '@mui/material';
+import { 
+  MyLocation as MyLocationIcon, 
+  Layers as LayersIcon,
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon
+} from '@mui/icons-material';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -14,8 +19,15 @@ import 'leaflet.markercluster';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks.js';
 import { selectFilteredEarthquakes } from '../../features/earthquakes/earthquakeSelectors.js';
-import { updateMapView } from '../../features/map/mapSlice.js';
+import { 
+  updateMapView, 
+  setLocationLoading, 
+  setUserLocation, 
+  setLocationError,
+  toggleUserLocation
+} from '../../features/map/mapSlice.js';
 import EarthquakeMarkers from './EarthquakeMarkers.jsx';
+import UserLocationMarker from './UserLocationMarker.jsx';
 
 
 // Fix for default markers in react-leaflet
@@ -56,45 +68,92 @@ const MapEventHandler = () => {
 };
 
 // User location component
-const UserLocationControl = () => {
+const UserLocationControl = ({ onLocationSuccess }) => {
   const map = useMap();
-  const [isLocating, setIsLocating] = useState(false);
+  const dispatch = useAppDispatch();
+  const { isLocating, userLocation, locationError } = useAppSelector(state => state.map);
 
   const locateUser = () => {
     if (!navigator.geolocation) {
-      alert('Geolocation is not supported by this browser.');
+      dispatch(setLocationError('Geolocation is not supported by this browser.'));
       return;
     }
 
-    setIsLocating(true);
+    dispatch(setLocationLoading(true));
+    
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const { latitude, longitude } = position.coords;
-        const location = [latitude, longitude];
-        map.setView(location, 8);
-        setIsLocating(false);
+        const { latitude, longitude, accuracy } = position.coords;
+        
+        // Update Redux state with location
+        dispatch(setUserLocation({ 
+          lat: latitude, 
+          lng: longitude, 
+          accuracy: accuracy 
+        }));
+        
+        // Center map on user location
+        map.setView([latitude, longitude], 10);
+        
+        // Show success notification
+        if (onLocationSuccess) {
+          onLocationSuccess();
+        }
       },
       (error) => {
         console.error('Error getting location:', error);
-        setIsLocating(false);
-        alert('Unable to get your location. Please check your browser settings.');
+        let errorMessage = 'Unable to get your location.';
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'Location access denied. Please enable location permissions.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'Location information unavailable.';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'Location request timed out.';
+            break;
+          default:
+            errorMessage = 'An unknown error occurred while retrieving location.';
+            break;
+        }
+        
+        dispatch(setLocationError(errorMessage));
       },
-      { timeout: 10000, enableHighAccuracy: true }
+      { 
+        timeout: 15000, 
+        enableHighAccuracy: true,
+        maximumAge: 300000 // 5 minutes
+      }
     );
   };
 
   return (
     <Box sx={{ position: 'absolute', bottom: 80, right: 16, zIndex: 1000 }}>
-      <Tooltip title="Find my location">
+      <Tooltip title={
+        locationError ? locationError : 
+        userLocation ? "Location found - click to refresh" : 
+        "Find my location"
+      }>
         <Fab
           size="small"
-          color="primary"
+          color={userLocation ? "success" : "primary"}
           onClick={locateUser}
           disabled={isLocating}
           sx={{
-            bgcolor: 'background.paper',
-            color: 'primary.main',
-            '&:hover': { bgcolor: 'primary.main', color: 'white' }
+            bgcolor: userLocation ? 'success.main' : 'background.paper',
+            color: userLocation ? 'white' : 'primary.main',
+            '&:hover': { 
+              bgcolor: userLocation ? 'success.dark' : 'primary.main', 
+              color: 'white' 
+            },
+            animation: isLocating ? 'pulse 1.5s infinite' : 'none',
+            '@keyframes pulse': {
+              '0%': { transform: 'scale(1)' },
+              '50%': { transform: 'scale(1.1)' },
+              '100%': { transform: 'scale(1)' }
+            }
           }}
         >
           <MyLocationIcon />
@@ -106,9 +165,11 @@ const UserLocationControl = () => {
 
 const LeafletMap = ({ height = '500px' }) => {
   const mapRef = useRef(null);
+  const dispatch = useAppDispatch();
   const earthquakes = useAppSelector(selectFilteredEarthquakes);
   const mapState = useAppSelector(state => state.map);
   const [tileLayer, setTileLayer] = useState('openstreetmap');
+  const [showLocationSuccess, setShowLocationSuccess] = useState(false);
 
 
   const tileLayerOptions = {
@@ -158,13 +219,35 @@ const LeafletMap = ({ height = '500px' }) => {
         
         <MapEventHandler />
         <EarthquakeMarkers earthquakes={earthquakes} />
+        
+        {/* User Location Marker */}
+        {mapState.showUserLocation && mapState.userLocation && (
+          <UserLocationMarker location={mapState.userLocation} />
+        )}
 
 
 
         {/* Map Controls */}
         <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 1000, display: 'flex', flexDirection: 'column', gap: 1 }}>
-
-
+          {/* Location Visibility Toggle */}
+          {mapState.userLocation && (
+            <Tooltip title={mapState.showUserLocation ? "Hide my location" : "Show my location"}>
+              <Fab
+                size="small"
+                color={mapState.showUserLocation ? "primary" : "default"}
+                onClick={() => dispatch(toggleUserLocation())}
+                sx={{
+                  bgcolor: mapState.showUserLocation ? 'primary.main' : 'background.paper',
+                  color: mapState.showUserLocation ? 'white' : 'text.secondary',
+                  '&:hover': { 
+                    bgcolor: mapState.showUserLocation ? 'primary.dark' : 'action.hover'
+                  }
+                }}
+              >
+                {mapState.showUserLocation ? <VisibilityIcon /> : <VisibilityOffIcon />}
+              </Fab>
+            </Tooltip>
+          )}
 
           {/* Map Layer Toggle */}
           <Tooltip title="Change map layer">
@@ -183,7 +266,43 @@ const LeafletMap = ({ height = '500px' }) => {
           </Tooltip>
         </Box>
 
-        <UserLocationControl />
+        <UserLocationControl onLocationSuccess={() => setShowLocationSuccess(true)} />
+        
+        {/* Location Error Notification */}
+        {mapState.locationError && (
+          <Snackbar
+            open={true}
+            autoHideDuration={6000}
+            onClose={() => dispatch(setLocationError(null))}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert 
+              severity="error" 
+              onClose={() => dispatch(setLocationError(null))}
+              sx={{ minWidth: 300 }}
+            >
+              {mapState.locationError}
+            </Alert>
+          </Snackbar>
+        )}
+        
+        {/* Location Success Notification */}
+        {showLocationSuccess && (
+          <Snackbar
+            open={true}
+            autoHideDuration={3000}
+            onClose={() => setShowLocationSuccess(false)}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert 
+              severity="success" 
+              onClose={() => setShowLocationSuccess(false)}
+              sx={{ minWidth: 300 }}
+            >
+              Location found! Your position is now marked on the map.
+            </Alert>
+          </Snackbar>
+        )}
       </MapContainer>
 
 

@@ -27,6 +27,7 @@ import { useAppSelector } from '../app/hooks.js';
 import { useGetEarthquakesQuery } from '../features/earthquakes/earthquakeAPI.js';
 import LeafletMap from '../components/Map/LeafletMap.jsx';
 import FilterPanel from '../components/Filters/FilterPanel.jsx';
+import NearbyEarthquakes from '../components/Location/NearbyEarthquakes.jsx';
 
 const MapPage = ({ onEarthquakeSelect }) => {
   const theme = useTheme();
@@ -209,6 +210,21 @@ const MapPage = ({ onEarthquakeSelect }) => {
                 </Typography>
               </CardContent>
             </Card>
+          )}
+
+          {/* Nearby Earthquakes Panel */}
+          {!isFullscreen && (
+            <Box sx={{
+              position: 'absolute',
+              bottom: 16,
+              right: 16,
+              zIndex: 1000,
+              width: 320,
+              maxHeight: '60vh',
+              overflow: 'auto'
+            }}>
+              <NearbyEarthquakes onEarthquakeSelect={onEarthquakeSelect} />
+            </Box>
           )}
         </Box>
       </Box>

@@ -2,9 +2,13 @@
  * Memoized selectors for earthquake data
  */
 
-import { createSelector } from '@reduxjs/toolkit';
-import { earthquakeApi } from './earthquakeAPI.js';
-import { filterEarthquakes, calculateEarthquakeStats } from '../../utils/calculations.js';
+import { createSelector } from "@reduxjs/toolkit";
+import { earthquakeApi } from "./earthquakeAPI.js";
+import {
+  filterEarthquakes,
+  calculateEarthquakeStats,
+  calculateDistance,
+} from "../../utils/calculations.js";
 
 /**
  * Base selectors for earthquake state
@@ -17,8 +21,9 @@ export const selectFiltersState = (state) => state.filters;
  */
 export const selectRawEarthquakes = createSelector(
   [(state) => state, (state, timePeriod) => timePeriod],
-  (state, timePeriod = 'day') => {
-    const result = earthquakeApi.endpoints.getEarthquakes.select(timePeriod)(state);
+  (state, timePeriod = "day") => {
+    const result =
+      earthquakeApi.endpoints.getEarthquakes.select(timePeriod)(state);
     return result?.data?.earthquakes || [];
   }
 );
@@ -30,21 +35,25 @@ export const selectFilteredEarthquakes = createSelector(
   [
     (state) => {
       const timePeriod = state.filters.timePeriod;
-      const result = earthquakeApi.endpoints.getEarthquakes.select(timePeriod)(state);
+      const result =
+        earthquakeApi.endpoints.getEarthquakes.select(timePeriod)(state);
       return result?.data?.earthquakes || [];
     },
-    selectFiltersState
+    selectFiltersState,
   ],
   (earthquakes, filters) => {
     if (!earthquakes || earthquakes.length === 0) return [];
-    
-    return earthquakes.filter(earthquake => {
+
+    return earthquakes.filter((earthquake) => {
       const magnitude = earthquake.properties?.mag || 0;
       const depth = earthquake.coordinates?.depth || 0;
-      const location = earthquake.properties?.place || '';
+      const location = earthquake.properties?.place || "";
 
       // Magnitude filter
-      if (magnitude < filters.magnitudeRange[0] || magnitude > filters.magnitudeRange[1]) {
+      if (
+        magnitude < filters.magnitudeRange[0] ||
+        magnitude > filters.magnitudeRange[1]
+      ) {
         return false;
       }
 
@@ -54,7 +63,10 @@ export const selectFilteredEarthquakes = createSelector(
       }
 
       // Location filter
-      if (filters.locationSearch && !location.toLowerCase().includes(filters.locationSearch.toLowerCase())) {
+      if (
+        filters.locationSearch &&
+        !location.toLowerCase().includes(filters.locationSearch.toLowerCase())
+      ) {
         return false;
       }
 
@@ -114,13 +126,13 @@ export const selectEarthquakesByMagnitude = createSelector(
   [selectFilteredEarthquakes],
   (earthquakes) => {
     const groups = {
-      minor: [],    // < 3.0
-      light: [],    // 3.0 - 4.9
+      minor: [], // < 3.0
+      light: [], // 3.0 - 4.9
       moderate: [], // 5.0 - 6.9
-      major: [],    // >= 7.0
+      major: [], // >= 7.0
     };
 
-    earthquakes.forEach(earthquake => {
+    earthquakes.forEach((earthquake) => {
       const magnitude = earthquake.properties.mag;
       if (magnitude === null || magnitude === undefined) {
         groups.minor.push(earthquake);
@@ -145,9 +157,10 @@ export const selectEarthquakesByMagnitude = createSelector(
 export const selectRecentEarthquakes = createSelector(
   [selectFilteredEarthquakes],
   (earthquakes) => {
-    const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    return earthquakes.filter(earthquake => 
-      earthquake.properties.time && earthquake.properties.time > oneHourAgo
+    const oneHourAgo = Date.now() - 60 * 60 * 1000;
+    return earthquakes.filter(
+      (earthquake) =>
+        earthquake.properties.time && earthquake.properties.time > oneHourAgo
     );
   }
 );
@@ -159,7 +172,7 @@ export const selectStrongestEarthquake = createSelector(
   [selectFilteredEarthquakes],
   (earthquakes) => {
     if (!earthquakes || earthquakes.length === 0) return null;
-    
+
     return earthquakes.reduce((strongest, current) => {
       const currentMag = current.properties.mag || 0;
       const strongestMag = strongest?.properties.mag || 0;
@@ -173,8 +186,9 @@ export const selectStrongestEarthquake = createSelector(
  */
 export const selectEarthquakeLoading = createSelector(
   [(state) => state, (state, timePeriod) => timePeriod],
-  (state, timePeriod = 'day') => {
-    const result = earthquakeApi.endpoints.getEarthquakes.select(timePeriod)(state);
+  (state, timePeriod = "day") => {
+    const result =
+      earthquakeApi.endpoints.getEarthquakes.select(timePeriod)(state);
     return result?.isLoading || false;
   }
 );
@@ -184,8 +198,59 @@ export const selectEarthquakeLoading = createSelector(
  */
 export const selectEarthquakeError = createSelector(
   [(state) => state, (state, timePeriod) => timePeriod],
-  (state, timePeriod = 'day') => {
-    const result = earthquakeApi.endpoints.getEarthquakes.select(timePeriod)(state);
+  (state, timePeriod = "day") => {
+    const result =
+      earthquakeApi.endpoints.getEarthquakes.select(timePeriod)(state);
     return result?.error || null;
+  }
+);
+
+/**
+ * Select earthquakes sorted by distance from user location
+ */
+export const selectEarthquakesByDistance = createSelector(
+  [selectFilteredEarthquakes, (state) => state.map.userLocation],
+  (earthquakes, userLocation) => {
+    if (!userLocation || !earthquakes || earthquakes.length === 0) {
+      return earthquakes;
+    }
+
+    return [...earthquakes]
+      .map((earthquake) => ({
+        ...earthquake,
+        distanceFromUser: calculateDistance(
+          userLocation.lat,
+          userLocation.lng,
+          earthquake.coordinates.lat,
+          earthquake.coordinates.lng
+        ),
+      }))
+      .sort((a, b) => a.distanceFromUser - b.distanceFromUser);
+  }
+);
+
+/**
+ * Select nearby earthquakes (within specified radius from user location)
+ */
+export const selectNearbyEarthquakes = createSelector(
+  [
+    selectFilteredEarthquakes,
+    (state) => state.map.userLocation,
+    (state, radiusKm = 100) => radiusKm,
+  ],
+  (earthquakes, userLocation, radiusKm) => {
+    if (!userLocation || !earthquakes || earthquakes.length === 0) {
+      return [];
+    }
+
+    return earthquakes.filter((earthquake) => {
+      const distance = calculateDistance(
+        userLocation.lat,
+        userLocation.lng,
+        earthquake.coordinates.lat,
+        earthquake.coordinates.lng
+      );
+      return distance <= radiusKm;
+    });
   }
 );

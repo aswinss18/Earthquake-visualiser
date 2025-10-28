@@ -17,6 +17,12 @@ const initialState = {
   // Map instance reference (non-serializable, handled carefully)
   mapInstance: null,
   
+  // User location state
+  userLocation: null,
+  isLocating: false,
+  locationError: null,
+  showUserLocation: false,
+  
   // Layer visibility
   showSatelliteLayer: false,
   showTerrainLayer: false,
@@ -161,6 +167,52 @@ const mapSlice = createSlice({
         state.lastInteraction = Date.now();
       }
     },
+
+    /**
+     * Set user location loading state
+     */
+    setLocationLoading: (state, action) => {
+      state.isLocating = action.payload;
+      if (action.payload) {
+        state.locationError = null;
+      }
+    },
+
+    /**
+     * Set user location
+     */
+    setUserLocation: (state, action) => {
+      const { lat, lng, accuracy } = action.payload;
+      state.userLocation = { lat, lng, accuracy };
+      state.isLocating = false;
+      state.locationError = null;
+      state.showUserLocation = true;
+    },
+
+    /**
+     * Set location error
+     */
+    setLocationError: (state, action) => {
+      state.locationError = action.payload;
+      state.isLocating = false;
+    },
+
+    /**
+     * Toggle user location visibility
+     */
+    toggleUserLocation: (state) => {
+      state.showUserLocation = !state.showUserLocation;
+    },
+
+    /**
+     * Clear user location
+     */
+    clearUserLocation: (state) => {
+      state.userLocation = null;
+      state.showUserLocation = false;
+      state.locationError = null;
+      state.isLocating = false;
+    },
   },
 });
 
@@ -176,6 +228,11 @@ export const {
   fitToBounds,
   resetMapView,
   zoomToEarthquake,
+  setLocationLoading,
+  setUserLocation,
+  setLocationError,
+  toggleUserLocation,
+  clearUserLocation,
 } = mapSlice.actions;
 
 // Export reducer
