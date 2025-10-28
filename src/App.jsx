@@ -1,35 +1,77 @@
 /**
- * Main Application Component - Complete Earthquake Visualizer
+ * Main Application Component - Modern Sidebar Layout
  */
 
 import React, { useState, useEffect } from 'react';
-import { Box, Container, CssBaseline, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  useMediaQuery,
+  useTheme,
+  IconButton,
+  AppBar,
+  Toolbar,
+  Typography,
+  Badge,
+  Tooltip
+} from '@mui/material';
+import {
+  Menu as MenuIcon,
+  DarkMode as DarkModeIcon,
+  LightMode as LightModeIcon,
+  Notifications as NotificationsIcon,
+  Refresh as RefreshIcon
+} from '@mui/icons-material';
 import { useAppSelector, useAppDispatch } from './app/hooks.js';
 import { useGetEarthquakesQuery } from './features/earthquakes/earthquakeAPI.js';
 import { updateLastRefresh } from './features/earthquakes/earthquakeSlice.js';
+import { useTheme as useCustomTheme } from './contexts/ThemeContext.jsx';
+import { useBookmarks } from './components/Bookmarks/BookmarksPanel.jsx';
 
-// Import components
-import Header from './components/Layout/Header.jsx';
-import StatisticsCards from './components/Statistics/StatisticsCards.jsx';
-import LeafletMap from './components/Map/LeafletMap.jsx';
-import FilterPanel from './components/Filters/FilterPanel.jsx';
-import DetailsPanel from './components/Details/DetailsPanel.jsx';
+// Layout Components
+import Sidebar from './components/Layout/Sidebar.jsx';
+
+// Pages
+import DashboardPage from './pages/DashboardPage.jsx';
+import MapPage from './pages/MapPage.jsx';
+import AnalyticsPage from './pages/AnalyticsPage.jsx';
+import SearchPage from './pages/SearchPage.jsx';
+import BookmarksPage from './pages/BookmarksPage.jsx';
+import NotificationsPage from './pages/NotificationsPage.jsx';
+
+// Modals and Components
+import SettingsDialog from './components/Settings/SettingsDialog.jsx';
+import EarthquakeDetailsModal from './components/Details/EarthquakeDetailsModal.jsx';
+import NotificationSystem from './components/Notifications/NotificationSystem.jsx';
+
+const SIDEBAR_WIDTH = 280;
+const SIDEBAR_WIDTH_COLLAPSED = 72;
 
 /**
- * Main App Component
+ * Main App Component with Modern Sidebar Layout
  */
 function App() {
   const theme = useTheme();
+  const { isDarkMode, toggleDarkMode } = useCustomTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const dispatch = useAppDispatch();
-  
+
   // Redux state
   const timePeriod = useAppSelector(state => state.filters.timePeriod);
   const earthquakeUI = useAppSelector(state => state.earthquakes);
-  
-  // Local state
+
+  // Local state for layout
+  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [currentPage, setCurrentPage] = useState('dashboard');
+
+  // Modal states
   const [settingsOpen, setSettingsOpen] = useState(false);
-  
+  const [selectedEarthquake, setSelectedEarthquake] = useState(null);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+
+  // Bookmarks hook
+  const { bookmarks, toggleBookmark, isBookmarked } = useBookmarks();
+
   // Fetch earthquake data
   const {
     data: earthquakeData,
@@ -53,93 +95,246 @@ function App() {
   // Handle manual refresh
   const handleRefresh = () => {
     refetch();
+    dispatch(updateLastRefresh());
   };
 
-  // Handle settings
-  const handleSettingsOpen = () => {
-    setSettingsOpen(true);
+  // Handle earthquake selection
+  const handleEarthquakeSelect = (earthquake) => {
+    setSelectedEarthquake(earthquake);
+    setDetailsModalOpen(true);
   };
 
-  const handleSettingsClose = () => {
-    setSettingsOpen(false);
+  // Handle sidebar toggle
+  const handleSidebarToggle = () => {
+    if (isMobile) {
+      setSidebarOpen(!sidebarOpen);
+    } else {
+      setSidebarCollapsed(!sidebarCollapsed);
+    }
+  };
+
+  // Handle page change
+  const handlePageChange = (pageId) => {
+    setCurrentPage(pageId);
+  };
+
+  // Calculate main content margins
+  const getMainContentMargin = () => {
+    if (isMobile) return 0;
+    return sidebarCollapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH;
+  };
+
+  // Render current page content
+  const renderPageContent = () => {
+    const commonProps = {
+      onEarthquakeSelect: handleEarthquakeSelect
+    };
+
+    switch (currentPage) {
+      case 'dashboard':
+        return <DashboardPage {...commonProps} />;
+      case 'map':
+        return <MapPage {...commonProps} />;
+      case 'analytics':
+        return <AnalyticsPage {...commonProps} />;
+      case 'search':
+        return <SearchPage {...commonProps} />;
+      case 'bookmarks':
+        return <BookmarksPage {...commonProps} />;
+      case 'notifications':
+        return <NotificationsPage {...commonProps} />;
+      case 'settings':
+        setSettingsOpen(true);
+        setCurrentPage('dashboard');
+        return <DashboardPage {...commonProps} />;
+      case 'about':
+        // TODO: Implement about page
+        return <DashboardPage {...commonProps} />;
+      default:
+        return <DashboardPage {...commonProps} />;
+    }
+  };
+
+  // Page titles
+  const getPageTitle = () => {
+    const titles = {
+      dashboard: 'Dashboard',
+      map: 'Interactive Map',
+      analytics: 'Analytics',
+      search: 'Search & Filter',
+      bookmarks: 'Bookmarks',
+      notifications: 'Notifications',
+      settings: 'Settings',
+      about: 'About'
+    };
+    return titles[currentPage] || 'Dashboard';
   };
 
   return (
-    <>
-      <CssBaseline />
-      <Box sx={{ 
-        minHeight: '100vh', 
-        bgcolor: 'grey.50',
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
-        {/* Header */}
-        <Header 
-          onRefresh={handleRefresh}
-          onSettingsOpen={handleSettingsOpen}
-        />
+    <Box sx={{
+      display: 'flex',
+      height: '100vh',
+      bgcolor: 'background.default',
+      overflow: 'hidden'
+    }}>
+      {/* Sidebar */}
+      <Sidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        collapsed={sidebarCollapsed && !isMobile}
+        onToggleCollapsed={() => setSidebarCollapsed(!sidebarCollapsed)}
+        bookmarkCount={bookmarks.length}
+      />
 
-        {/* Main Content */}
-        <Container 
-          maxWidth="xl" 
-          sx={{ 
-            flex: 1,
-            py: 3,
+      {/* Main Content Area */}
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          marginLeft: isMobile ? 0 : `${getMainContentMargin()}px`,
+          transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
+          minWidth: 0,
+          height: '100vh',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Top App Bar */}
+        <AppBar
+          position="static"
+          elevation={0}
+          sx={{
+            bgcolor: 'background.paper',
+            color: 'text.primary',
+            borderBottom: 1,
+            borderColor: 'divider',
+            zIndex: theme.zIndex.drawer - 1
+          }}
+        >
+          <Toolbar sx={{ minHeight: 64 }}>
+            {/* Mobile Menu Button */}
+            {isMobile && (
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={handleSidebarToggle}
+                sx={{ mr: 2 }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+
+            {/* Page Title */}
+            <Typography variant="h6" component="h1" sx={{ flexGrow: 1, fontWeight: 600 }}>
+              {getPageTitle()}
+            </Typography>
+
+            {/* Action Buttons */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {/* Notifications Badge */}
+              <Tooltip title="View notifications">
+                <IconButton
+                  color="inherit"
+                  onClick={() => setCurrentPage('notifications')}
+                >
+                  <Badge badgeContent={0} color="error">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+
+              {/* Refresh Button */}
+              <Tooltip title="Refresh data">
+                <IconButton
+                  color="inherit"
+                  onClick={handleRefresh}
+                  disabled={isLoading}
+                  sx={{
+                    animation: isLoading ? 'spin 1s linear infinite' : 'none',
+                    '@keyframes spin': {
+                      '0%': { transform: 'rotate(0deg)' },
+                      '100%': { transform: 'rotate(360deg)' }
+                    }
+                  }}
+                >
+                  <RefreshIcon />
+                </IconButton>
+              </Tooltip>
+
+              {/* Dark Mode Toggle */}
+              <Tooltip title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}>
+                <IconButton color="inherit" onClick={toggleDarkMode}>
+                  {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+                </IconButton>
+              </Tooltip>
+
+              {/* Desktop Menu Toggle */}
+              {!isMobile && (
+                <Tooltip title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
+                  <IconButton color="inherit" onClick={handleSidebarToggle}>
+                    <MenuIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Box>
+          </Toolbar>
+        </AppBar>
+
+        {/* Page Content */}
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column'
           }}
         >
-          {/* Statistics Cards */}
-          <StatisticsCards isLoading={isLoading} />
-
-          {/* Main Layout */}
-          <Box sx={{ 
-            display: 'flex', 
-            gap: 3,
-            flex: 1,
-            flexDirection: { xs: 'column', lg: 'row' },
-            minHeight: 0 // Important for proper flex behavior
-          }}>
-            {/* Filter Panel */}
-            <Box sx={{ 
-              width: { lg: 320 },
-              flexShrink: 0,
-              order: { xs: 2, lg: 1 }
-            }}>
-              <FilterPanel />
-            </Box>
-
-            {/* Map Container */}
-            <Box sx={{ 
-              flex: 1,
-              minHeight: { xs: '400px', md: '500px', lg: '600px' },
-              order: { xs: 1, lg: 2 }
-            }}>
-              <LeafletMap 
-                height="100%" 
-                isLoading={isLoading}
-                error={error}
-              />
-            </Box>
-
-            {/* Details Panel */}
-            <Box sx={{ 
-              width: { lg: 320 },
-              flexShrink: 0,
-              order: { xs: 3, lg: 3 }
-            }}>
-              <DetailsPanel />
-            </Box>
-          </Box>
-        </Container>
-
-        {/* Settings Dialog - TODO: Implement settings modal */}
-        {/* <SettingsDialog 
-          open={settingsOpen}
-          onClose={handleSettingsClose}
-        /> */}
+          {renderPageContent()}
+        </Box>
       </Box>
-    </>
+
+      {/* Modals and Overlays */}
+
+      {/* Settings Dialog */}
+      <SettingsDialog
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+      />
+
+      {/* Earthquake Details Modal */}
+      <EarthquakeDetailsModal
+        open={detailsModalOpen}
+        onClose={() => setDetailsModalOpen(false)}
+        earthquake={selectedEarthquake}
+        isBookmarked={selectedEarthquake ? isBookmarked(selectedEarthquake.id) : false}
+        onToggleBookmark={toggleBookmark}
+      />
+
+      {/* Notification System */}
+      <NotificationSystem enabled={true} />
+
+      {/* Mobile Sidebar Overlay */}
+      {isMobile && sidebarOpen && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            bgcolor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: theme.zIndex.drawer - 1
+          }}
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+    </Box>
   );
 }
 

@@ -10,11 +10,13 @@
 export const calculateEarthquakeStats = (earthquakes) => {
   if (!earthquakes || earthquakes.length === 0) {
     return {
-      total: 0,
+      totalCount: 0,
       averageMagnitude: 0,
-      strongestMagnitude: 0,
-      deepestDepth: 0,
+      maxMagnitude: 0,
+      strongestLocation: null,
       mostActiveRegion: 'N/A',
+      mostActiveCount: 0,
+      deepestDepth: 0,
       magnitudeDistribution: {
         minor: 0,
         light: 0,
@@ -41,27 +43,40 @@ export const calculateEarthquakeStats = (earthquakes) => {
     else distribution.major++;
   });
 
+  // Find strongest earthquake
+  const strongestEarthquake = earthquakes.reduce((strongest, current) => {
+    const currentMag = current.properties.mag || 0;
+    const strongestMag = strongest?.properties.mag || 0;
+    return currentMag > strongestMag ? current : strongest;
+  }, null);
+
+  // Get most active region info
+  const mostActiveInfo = findMostActiveRegion(earthquakes);
+
   return {
-    total: earthquakes.length,
-    averageMagnitude: magnitudes.length > 0 
+    totalCount: earthquakes.length,
+    averageMagnitude: magnitudes.length > 0
       ? (magnitudes.reduce((sum, mag) => sum + mag, 0) / magnitudes.length)
       : 0,
-    strongestMagnitude: magnitudes.length > 0 ? Math.max(...magnitudes) : 0,
+    maxMagnitude: magnitudes.length > 0 ? Math.max(...magnitudes) : 0,
+    strongestLocation: strongestEarthquake?.properties.place || null,
+    mostActiveRegion: mostActiveInfo.region,
+    mostActiveCount: mostActiveInfo.count,
     deepestDepth: depths.length > 0 ? Math.max(...depths) : 0,
-    mostActiveRegion: findMostActiveRegion(earthquakes),
     magnitudeDistribution: distribution
   };
-};/**
- 
-* Find the most active region based on earthquake count
+};
+
+/**
+ * Find the most active region based on earthquake count
  * @param {Array} earthquakes - Array of earthquake objects
  * @returns {string} Most active region name
  */
 const findMostActiveRegion = (earthquakes) => {
-  if (!earthquakes || earthquakes.length === 0) return 'N/A';
+  if (!earthquakes || earthquakes.length === 0) return { region: 'N/A', count: 0 };
 
   const regionCounts = {};
-  
+
   earthquakes.forEach(earthquake => {
     const place = earthquake.properties.place;
     if (!place) return;
@@ -69,7 +84,7 @@ const findMostActiveRegion = (earthquakes) => {
     // Extract region from place string (everything after the last comma)
     const parts = place.split(',');
     const region = parts[parts.length - 1].trim();
-    
+
     regionCounts[region] = (regionCounts[region] || 0) + 1;
   });
 
@@ -84,7 +99,7 @@ const findMostActiveRegion = (earthquakes) => {
     }
   });
 
-  return mostActiveRegion;
+  return { region: mostActiveRegion, count: maxCount };
 };
 
 /**

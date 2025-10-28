@@ -11,21 +11,25 @@ import {
   IconButton,
   Chip,
   Tooltip,
-  useTheme,
+  useTheme as useMuiTheme,
   useMediaQuery
 } from '@mui/material';
 import {
   Refresh as RefreshIcon,
   Settings as SettingsIcon,
-  Info as InfoIcon
+  Info as InfoIcon,
+  DarkMode as DarkModeIcon,
+  LightMode as LightModeIcon
 } from '@mui/icons-material';
 import { useAppSelector, useAppDispatch } from '../../app/hooks.js';
 import { selectEarthquakeUI } from '../../features/earthquakes/earthquakeSelectors.js';
 import { updateLastRefresh } from '../../features/earthquakes/earthquakeSlice.js';
+import { useTheme } from '../../contexts/ThemeContext.jsx';
 
 const Header = ({ onRefresh, onSettingsOpen }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const muiTheme = useMuiTheme();
+  const { isDarkMode, toggleDarkMode } = useTheme();
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
   const dispatch = useAppDispatch();
   const earthquakeUI = useAppSelector(selectEarthquakeUI);
 
@@ -110,6 +114,13 @@ const Header = ({ onRefresh, onSettingsOpen }) => {
               </Typography>
             </Box>
           )}
+
+          {/* Dark Mode Toggle */}
+          <Tooltip title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}>
+            <IconButton onClick={toggleDarkMode} color="primary">
+              {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
+          </Tooltip>
 
           {/* Refresh Button */}
           <Tooltip title="Refresh data">
