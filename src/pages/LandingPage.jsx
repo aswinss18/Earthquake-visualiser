@@ -38,28 +38,28 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
 
   // Floating objects animation keyframes
   const floatingAnimation = {
-    '@keyframes float1': {
-      '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
-      '50%': { transform: 'translateY(-20px) rotate(180deg)' },
+    "@keyframes float1": {
+      "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
+      "50%": { transform: "translateY(-20px) rotate(180deg)" },
     },
-    '@keyframes float2': {
-      '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
-      '50%': { transform: 'translateY(-15px) rotate(-180deg)' },
+    "@keyframes float2": {
+      "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
+      "50%": { transform: "translateY(-15px) rotate(-180deg)" },
     },
-    '@keyframes float3': {
-      '0%, 100%': { transform: 'translateY(0px) scale(1)' },
-      '50%': { transform: 'translateY(-25px) scale(1.1)' },
+    "@keyframes float3": {
+      "0%, 100%": { transform: "translateY(0px) scale(1)" },
+      "50%": { transform: "translateY(-25px) scale(1.1)" },
     },
-    '@keyframes pulse': {
-      '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
-      '50%': { opacity: 1, transform: 'scale(1.05)' },
+    "@keyframes pulse": {
+      "0%, 100%": { opacity: 0.6, transform: "scale(1)" },
+      "50%": { opacity: 1, transform: "scale(1.05)" },
     },
-    '@keyframes drift': {
-      '0%': { transform: 'translateX(0px) translateY(0px)' },
-      '25%': { transform: 'translateX(10px) translateY(-10px)' },
-      '50%': { transform: 'translateX(-5px) translateY(-20px)' },
-      '75%': { transform: 'translateX(-10px) translateY(-10px)' },
-      '100%': { transform: 'translateX(0px) translateY(0px)' },
+    "@keyframes drift": {
+      "0%": { transform: "translateX(0px) translateY(0px)" },
+      "25%": { transform: "translateX(10px) translateY(-10px)" },
+      "50%": { transform: "translateX(-5px) translateY(-20px)" },
+      "75%": { transform: "translateX(-10px) translateY(-10px)" },
+      "100%": { transform: "translateX(0px) translateY(0px)" },
     },
   };
 
@@ -195,7 +195,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           zIndex: 0,
         }}
       />
-      
+
       {/* Seismic Wave Rings - Responsive */}
       <Box
         sx={{
@@ -225,7 +225,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           display: { xs: "none", sm: "block" },
         }}
       />
-      
+
       {/* Geometric patterns */}
       <Box
         sx={{
@@ -254,7 +254,6 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           zIndex: 0,
         }}
       />
-      
 
       {/* Navigation Bar - Mobile Responsive */}
       <Box
@@ -276,15 +275,26 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
               justifyContent: "space-between",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 1, sm: 2 } }}>
-              <EarthIcon sx={{ fontSize: { xs: 24, sm: 28, md: 32 }, color: "#3b82f6" }} />
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: { xs: 1, sm: 2 },
+              }}
+            >
+              <EarthIcon
+                sx={{ fontSize: { xs: 24, sm: 28, md: 32 }, color: "#3b82f6" }}
+              />
               <Typography
                 variant={isSmallMobile ? "subtitle1" : "h6"}
-                sx={{ 
-                  fontWeight: 700, 
+                sx={{
+                  fontWeight: 700,
                   color: "#1f2937",
                   fontSize: { xs: "1rem", sm: "1.1rem", md: "1.25rem" },
-                  display: { xs: isSmallMobile ? "none" : "block", sm: "block" }
+                  display: {
+                    xs: isSmallMobile ? "none" : "block",
+                    sm: "block",
+                  },
                 }}
               >
                 Earthquake Visualizer
@@ -320,27 +330,27 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
       </Box>
 
       {/* Hero Section - Mobile Responsive */}
-      <Container 
-        maxWidth="lg" 
-        sx={{ 
-          py: { xs: 4, sm: 6, md: 8, lg: 12 }, 
+      <Container
+        maxWidth="lg"
+        sx={{
+          py: { xs: 4, sm: 6, md: 8, lg: 12 },
           px: { xs: 2, sm: 3 },
-          position: "relative", 
-          zIndex: 1 
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <Grid container spacing={{ xs: 4, sm: 6, md: 8 }} alignItems="center">
           <Grid item xs={12} md={6}>
             <Fade in timeout={1000}>
               <div>
-                <Stack 
-                  direction="row" 
-                  spacing={1} 
-                  sx={{ 
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{
                     mb: { xs: 2, sm: 3 },
                     justifyContent: { xs: "center", md: "flex-start" },
                     flexWrap: "wrap",
-                    gap: 1
+                    gap: 1,
                   }}
                 >
                   <Chip
@@ -350,7 +360,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                       bgcolor: "#dbeafe",
                       color: "#1e40af",
                       fontWeight: 500,
-                      fontSize: { xs: "0.75rem", sm: "0.8125rem" }
+                      fontSize: { xs: "0.75rem", sm: "0.8125rem" },
                     }}
                   />
                   <Chip
@@ -360,7 +370,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                       bgcolor: "#dcfce7",
                       color: "#166534",
                       fontWeight: 500,
-                      fontSize: { xs: "0.75rem", sm: "0.8125rem" }
+                      fontSize: { xs: "0.75rem", sm: "0.8125rem" },
                     }}
                   />
                 </Stack>
@@ -376,12 +386,12 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                     letterSpacing: "-0.025em",
                     lineHeight: 1.1,
                     textAlign: { xs: "center", md: "left" },
-                    fontSize: { 
-                      xs: "1.75rem", 
-                      sm: "2.25rem", 
-                      md: "2.75rem", 
-                      lg: "3.5rem" 
-                    }
+                    fontSize: {
+                      xs: "1.75rem",
+                      sm: "2.25rem",
+                      md: "2.75rem",
+                      lg: "3.5rem",
+                    },
                   }}
                 >
                   Visualize Earth's
@@ -403,12 +413,12 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                     fontWeight: 400,
                     maxWidth: { xs: "100%", md: 500 },
                     textAlign: { xs: "center", md: "left" },
-                    fontSize: { 
-                      xs: "1rem", 
-                      sm: "1.125rem", 
-                      md: "1.25rem" 
+                    fontSize: {
+                      xs: "1rem",
+                      sm: "1.125rem",
+                      md: "1.25rem",
                     },
-                    px: { xs: 1, sm: 0 }
+                    px: { xs: 1, sm: 0 },
                   }}
                 >
                   Explore real-time earthquake data from USGS with interactive
@@ -419,10 +429,10 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                 <Stack
                   direction={{ xs: "column", sm: "row" }}
                   spacing={2}
-                  sx={{ 
+                  sx={{
                     mb: { xs: 4, sm: 6 },
                     alignItems: "center",
-                    justifyContent: { xs: "center", md: "flex-start" }
+                    justifyContent: { xs: "center", md: "flex-start" },
                   }}
                 >
                   <Button
@@ -480,11 +490,11 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                 <Stack
                   direction={{ xs: "column", sm: "row" }}
                   spacing={{ xs: 2, sm: 4 }}
-                  sx={{ 
-                    color: "#9ca3af", 
+                  sx={{
+                    color: "#9ca3af",
                     fontSize: { xs: "0.8125rem", sm: "0.875rem" },
                     alignItems: "center",
-                    justifyContent: { xs: "center", md: "flex-start" }
+                    justifyContent: { xs: "center", md: "flex-start" },
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -534,7 +544,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                     borderRadius: "50%",
                   }}
                 />
-                
+
                 {/* Floating seismic indicators around globe */}
                 <Box
                   sx={{
@@ -598,7 +608,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                     zIndex: 2,
                     overflow: "hidden",
                     borderRadius: "40%",
-                    mx: "auto"
+                    mx: "auto",
                   }}
                 >
                   <SimpleGlobe3D />
@@ -610,7 +620,13 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
       </Container>
 
       {/* Features Section - Mobile Responsive */}
-      <Box sx={{ bgcolor: "#fafafa", py: { xs: 6, sm: 8, md: 12 }, position: "relative" }}>
+      <Box
+        sx={{
+          bgcolor: "#fafafa",
+          py: { xs: 6, sm: 8, md: 12 },
+          position: "relative",
+        }}
+      >
         {/* Additional floating elements for features section */}
         <Box
           sx={{
@@ -638,7 +654,10 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
             zIndex: 0,
           }}
         />
-        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1, px: { xs: 2, sm: 3 } }}>
+        <Container
+          maxWidth="lg"
+          sx={{ position: "relative", zIndex: 1, px: { xs: 2, sm: 3 } }}
+        >
           <Fade in timeout={1500}>
             <div>
               <Typography
@@ -650,7 +669,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                   mb: { xs: 1, sm: 2 },
                   fontWeight: 700,
                   color: "#111827",
-                  fontSize: { xs: "1.5rem", sm: "2rem", md: "2.125rem" }
+                  fontSize: { xs: "1.5rem", sm: "2rem", md: "2.125rem" },
                 }}
               >
                 Powerful Features
@@ -664,7 +683,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                   maxWidth: { xs: "100%", sm: 600 },
                   mx: "auto",
                   fontSize: { xs: "0.875rem", sm: "1rem" },
-                  px: { xs: 2, sm: 0 }
+                  px: { xs: 2, sm: 0 },
                 }}
               >
                 Everything you need to understand and visualize seismic activity
@@ -693,7 +712,9 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                         overflow: "visible",
                       }}
                     >
-                      <CardContent sx={{ p: { xs: 3, sm: 4 }, textAlign: "center" }}>
+                      <CardContent
+                        sx={{ p: { xs: 3, sm: 4 }, textAlign: "center" }}
+                      >
                         <Box
                           sx={{
                             mb: { xs: 2, sm: 3 },
@@ -708,7 +729,10 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                           }}
                         >
                           {React.cloneElement(feature.icon, {
-                            sx: { fontSize: { xs: 24, sm: 28, md: 32 }, color: feature.color },
+                            sx: {
+                              fontSize: { xs: 24, sm: 28, md: 32 },
+                              color: feature.color,
+                            },
                           })}
                         </Box>
                         <Typography
@@ -719,7 +743,11 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                             fontWeight: 600,
                             color: "#111827",
                             mb: { xs: 1, sm: 2 },
-                            fontSize: { xs: "1rem", sm: "1.125rem", md: "1.25rem" }
+                            fontSize: {
+                              xs: "1rem",
+                              sm: "1.125rem",
+                              md: "1.25rem",
+                            },
                           }}
                         >
                           {feature.title}
@@ -729,7 +757,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                           sx={{
                             lineHeight: 1.6,
                             color: "#6b7280",
-                            fontSize: { xs: "0.8125rem", sm: "0.875rem" }
+                            fontSize: { xs: "0.8125rem", sm: "0.875rem" },
                           }}
                         >
                           {feature.description}
@@ -784,21 +812,23 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           <Grid container spacing={{ xs: 3, sm: 4 }} alignItems="center">
             <Grid item xs={12} md={6}>
               <Box
-                sx={{ 
-                  display: "flex", 
-                  alignItems: "center", 
-                  gap: { xs: 1.5, sm: 2 }, 
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: { xs: 1.5, sm: 2 },
                   mb: { xs: 1.5, sm: 2 },
-                  justifyContent: { xs: "center", md: "flex-start" }
+                  justifyContent: { xs: "center", md: "flex-start" },
                 }}
               >
-                <EarthIcon sx={{ fontSize: { xs: 24, sm: 28 }, color: "#3b82f6" }} />
+                <EarthIcon
+                  sx={{ fontSize: { xs: 24, sm: 28 }, color: "#3b82f6" }}
+                />
                 <Typography
                   variant={isSmallMobile ? "subtitle1" : "h6"}
-                  sx={{ 
-                    fontWeight: 700, 
+                  sx={{
+                    fontWeight: 700,
                     color: "white",
-                    fontSize: { xs: "1rem", sm: "1.125rem", md: "1.25rem" }
+                    fontSize: { xs: "1rem", sm: "1.125rem", md: "1.25rem" },
                   }}
                 >
                   Earthquake Visualizer
@@ -806,11 +836,11 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
               </Box>
               <Typography
                 variant="body2"
-                sx={{ 
-                  color: "#9ca3af", 
+                sx={{
+                  color: "#9ca3af",
                   lineHeight: 1.6,
                   textAlign: { xs: "center", md: "left" },
-                  fontSize: { xs: "0.8125rem", sm: "0.875rem" }
+                  fontSize: { xs: "0.8125rem", sm: "0.875rem" },
                 }}
               >
                 Real-time earthquake visualization and analysis platform for
@@ -820,12 +850,12 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Box sx={{ textAlign: { xs: "center", md: "right" } }}>
-                <Typography 
-                  variant="body2" 
-                  sx={{ 
-                    color: "#9ca3af", 
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: "#9ca3af",
                     mb: { xs: 1.5, sm: 2 },
-                    fontSize: { xs: "0.8125rem", sm: "0.875rem" }
+                    fontSize: { xs: "0.8125rem", sm: "0.875rem" },
                   }}
                 >
                   Built for students, researchers, and seismology enthusiasts
@@ -833,28 +863,28 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                 <Stack
                   direction="row"
                   spacing={{ xs: 1, sm: 2 }}
-                  sx={{ 
+                  sx={{
                     justifyContent: { xs: "center", md: "flex-end" },
                     flexWrap: "wrap",
-                    gap: 1
+                    gap: 1,
                   }}
                 >
                   <Chip
                     label="Open Source"
                     size="small"
-                    sx={{ 
-                      bgcolor: "#374151", 
+                    sx={{
+                      bgcolor: "#374151",
                       color: "#d1d5db",
-                      fontSize: { xs: "0.75rem", sm: "0.8125rem" }
+                      fontSize: { xs: "0.75rem", sm: "0.8125rem" },
                     }}
                   />
                   <Chip
                     label="Educational"
                     size="small"
-                    sx={{ 
-                      bgcolor: "#374151", 
+                    sx={{
+                      bgcolor: "#374151",
                       color: "#d1d5db",
-                      fontSize: { xs: "0.75rem", sm: "0.8125rem" }
+                      fontSize: { xs: "0.75rem", sm: "0.8125rem" },
                     }}
                   />
                 </Stack>
@@ -865,9 +895,9 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           <Typography
             variant="body2"
             textAlign="center"
-            sx={{ 
+            sx={{
               color: "#6b7280",
-              fontSize: { xs: "0.8125rem", sm: "0.875rem" }
+              fontSize: { xs: "0.8125rem", sm: "0.875rem" },
             }}
           >
             © 2024 Earthquake Visualizer. Built with React and Material-UI.

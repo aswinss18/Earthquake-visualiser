@@ -22,12 +22,13 @@ export const useTheme = () => {
 
 export const CustomThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check localStorage or system preference
+    // Check localStorage, default to light mode (white theme)
     const savedTheme = localStorage.getItem('earthquakeApp.theme');
     if (savedTheme) {
       return savedTheme === 'dark';
     }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Always default to light mode instead of system preference
+    return false;
   });
 
   useEffect(() => {
