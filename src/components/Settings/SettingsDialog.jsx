@@ -137,16 +137,7 @@ const SettingsDialog = ({ open, onClose }) => {
                 }
                 label="Dark mode"
               />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={settings.compactView}
-                    onChange={handleSettingChange('compactView')}
-                    color="primary"
-                  />
-                }
-                label="Compact view"
-              />
+              
             </FormGroup>
           </Paper>
 
