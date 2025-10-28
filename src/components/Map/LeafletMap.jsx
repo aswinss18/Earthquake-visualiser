@@ -144,7 +144,8 @@ const UserLocationControl = ({ onLocationSuccess }) => {
           disabled={isLocating}
           sx={{
             bgcolor: userLocation ? 'success.main' : 'background.paper',
-            color: userLocation ? 'white' : 'primary.main',
+            color: userLocation ? 'white' : 'text.primary',
+            boxShadow: 3,
             '&:hover': { 
               bgcolor: userLocation ? 'success.dark' : 'primary.main', 
               color: 'white' 
@@ -238,7 +239,8 @@ const LeafletMap = ({ height = '500px' }) => {
                 onClick={() => dispatch(toggleUserLocation())}
                 sx={{
                   bgcolor: mapState.showUserLocation ? 'primary.main' : 'background.paper',
-                  color: mapState.showUserLocation ? 'white' : 'text.secondary',
+                  color: mapState.showUserLocation ? 'white' : 'text.primary',
+                  boxShadow: 3,
                   '&:hover': { 
                     bgcolor: mapState.showUserLocation ? 'primary.dark' : 'action.hover'
                   }
@@ -253,12 +255,15 @@ const LeafletMap = ({ height = '500px' }) => {
           <Tooltip title="Change map layer">
             <Fab
               size="small"
-              color="primary"
               onClick={toggleTileLayer}
               sx={{
                 bgcolor: 'background.paper',
-                color: 'primary.main',
-                '&:hover': { bgcolor: 'primary.main', color: 'white' }
+                color: 'text.primary',
+                boxShadow: 3,
+                '&:hover': { 
+                  bgcolor: 'primary.main', 
+                  color: 'white' 
+                }
               }}
             >
               <LayersIcon />

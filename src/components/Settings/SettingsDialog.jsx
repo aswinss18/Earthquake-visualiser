@@ -2,7 +2,7 @@
  * Settings Dialog Component
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -104,7 +104,16 @@ const SettingsDialog = ({ open, onClose }) => {
         <Typography variant="h6" component="h2">
           Application Settings
         </Typography>
-        <IconButton onClick={onClose} size="small">
+        <IconButton 
+          onClick={onClose} 
+          size="small"
+          sx={{
+            color: 'text.primary',
+            '&:hover': {
+              bgcolor: 'action.hover'
+            }
+          }}
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>

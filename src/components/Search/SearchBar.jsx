@@ -276,7 +276,17 @@ const SearchBar = ({ onSelectEarthquake }) => {
               endAdornment: (
                 <InputAdornment position="end">
                   {searchValue && (
-                    <IconButton size="small" onClick={clearSearch}>
+                    <IconButton 
+                      size="small" 
+                      onClick={clearSearch}
+                      sx={{
+                        color: 'text.secondary',
+                        '&:hover': {
+                          color: 'text.primary',
+                          bgcolor: 'action.hover'
+                        }
+                      }}
+                    >
                       <ClearIcon />
                     </IconButton>
                   )}

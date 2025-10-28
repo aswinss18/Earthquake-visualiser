@@ -335,6 +335,41 @@
   }
 }
 
+/* Dark mode styles for Leaflet controls */
+[data-mui-color-scheme="dark"] .leaflet-control-zoom a,
+[data-mui-color-scheme="dark"] .leaflet-control-layers-toggle,
+[data-mui-color-scheme="dark"] .leaflet-control-attribution {
+  background-color: rgba(30, 41, 59, 0.9) !important;
+  color: #f1f5f9 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-mui-color-scheme="dark"] .leaflet-control-zoom a:hover,
+[data-mui-color-scheme="dark"] .leaflet-control-layers-toggle:hover {
+  background-color: rgba(30, 41, 59, 1) !important;
+  color: white !important;
+}
+
+[data-mui-color-scheme="dark"] .leaflet-control-layers {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  color: #f1f5f9 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-mui-color-scheme="dark"] .leaflet-control-layers-base label,
+[data-mui-color-scheme="dark"] .leaflet-control-layers-overlays label {
+  color: #f1f5f9 !important;
+}
+
+[data-mui-color-scheme="dark"] .leaflet-popup-content-wrapper {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  color: #f1f5f9 !important;
+}
+
+[data-mui-color-scheme="dark"] .leaflet-popup-tip {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+}
+
 /* Print styles */
 @media print {
   .no-print {

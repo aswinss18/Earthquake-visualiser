@@ -127,7 +127,16 @@ const NotificationSystem = ({ enabled = true }) => {
               Recent Alerts
             </Typography>
           </Box>
-          <IconButton size="small" onClick={handleDismissAll}>
+          <IconButton 
+            size="small" 
+            onClick={handleDismissAll}
+            sx={{
+              color: 'text.primary',
+              '&:hover': {
+                bgcolor: 'action.hover'
+              }
+            }}
+          >
             <CloseIcon fontSize="small" />
           </IconButton>
         </Box>

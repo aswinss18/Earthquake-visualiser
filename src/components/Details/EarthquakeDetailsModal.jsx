@@ -2,7 +2,7 @@
  * Enhanced Earthquake Details Modal
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -176,16 +176,43 @@ const EarthquakeDetailsModal = ({ open, onClose, earthquake, isBookmarked, onTog
         </Box>
         <Box sx={{ display: 'flex', gap: 0.5 }}>
           <Tooltip title="Share earthquake details">
-            <IconButton onClick={handleShare} size="small">
+            <IconButton 
+              onClick={handleShare} 
+              size="small"
+              sx={{
+                color: 'text.primary',
+                '&:hover': {
+                  bgcolor: 'action.hover'
+                }
+              }}
+            >
               <ShareIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title={isBookmarked ? "Remove bookmark" : "Bookmark earthquake"}>
-            <IconButton onClick={() => onToggleBookmark?.(earthquake)} size="small">
-              {isBookmarked ? <BookmarkIcon color="primary" /> : <BookmarkBorderIcon />}
+            <IconButton 
+              onClick={() => onToggleBookmark?.(earthquake)} 
+              size="small"
+              sx={{
+                color: isBookmarked ? 'primary.main' : 'text.primary',
+                '&:hover': {
+                  bgcolor: 'action.hover'
+                }
+              }}
+            >
+              {isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
             </IconButton>
           </Tooltip>
-          <IconButton onClick={onClose} size="small">
+          <IconButton 
+            onClick={onClose} 
+            size="small"
+            sx={{
+              color: 'text.primary',
+              '&:hover': {
+                bgcolor: 'action.hover'
+              }
+            }}
+          >
             <CloseIcon />
           </IconButton>
         </Box>
@@ -319,7 +346,7 @@ const EarthquakeDetailsModal = ({ open, onClose, earthquake, isBookmarked, onTog
             <List dense>
               <ListItem>
                 <ListItemIcon>
-                  <LocationIcon />
+                  <LocationIcon sx={{ color: 'text.primary' }} />
                 </ListItemIcon>
                 <ListItemText
                   primary="Location"
@@ -336,7 +363,7 @@ const EarthquakeDetailsModal = ({ open, onClose, earthquake, isBookmarked, onTog
 
               <ListItem>
                 <ListItemIcon>
-                  <TimeIcon />
+                  <TimeIcon sx={{ color: 'text.primary' }} />
                 </ListItemIcon>
                 <ListItemText
                   primary="Time"
@@ -356,7 +383,7 @@ const EarthquakeDetailsModal = ({ open, onClose, earthquake, isBookmarked, onTog
               {updatedTime && (
                 <ListItem>
                   <ListItemIcon>
-                    <InfoIcon />
+                    <InfoIcon sx={{ color: 'text.primary' }} />
                   </ListItemIcon>
                   <ListItemText
                     primary="Last Updated"
@@ -368,7 +395,7 @@ const EarthquakeDetailsModal = ({ open, onClose, earthquake, isBookmarked, onTog
               {(cdi || mmi) && (
                 <ListItem>
                   <ListItemIcon>
-                    <SpeedIcon />
+                    <SpeedIcon sx={{ color: 'text.primary' }} />
                   </ListItemIcon>
                   <ListItemText
                     primary="Intensity"
@@ -435,11 +462,20 @@ const EarthquakeDetailsModal = ({ open, onClose, earthquake, isBookmarked, onTog
             rel="noopener noreferrer"
             startIcon={<OpenInNewIcon />}
             color="primary"
+            variant="contained"
           >
             USGS Details
           </Button>
         )}
-        <Button onClick={onClose}>
+        <Button 
+          onClick={onClose}
+          sx={{
+            color: 'text.primary',
+            '&:hover': {
+              bgcolor: 'action.hover'
+            }
+          }}
+        >
           Close
         </Button>
       </DialogActions>

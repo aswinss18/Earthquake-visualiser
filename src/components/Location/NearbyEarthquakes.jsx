@@ -3,7 +3,7 @@
  * Shows earthquakes near user's location
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Card,
@@ -28,16 +28,16 @@ import {
   MyLocation as MyLocationIcon,
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
-  Warning as WarningIcon,
   Place as PlaceIcon,
-  AccessTime as TimeIcon
+  AccessTime as TimeIcon,
+  Close as CloseIcon
 } from '@mui/icons-material';
 import { useAppSelector } from '../../app/hooks.js';
 import { selectNearbyEarthquakes } from '../../features/earthquakes/earthquakeSelectors.js';
 import { getMagnitudeColor, getMagnitudeSeverity } from '../../utils/calculations.js';
 import { formatMagnitude, formatDateTime, formatLocation } from '../../utils/formatters.js';
 
-const NearbyEarthquakes = ({ onEarthquakeSelect }) => {
+const NearbyEarthquakes = ({ onEarthquakeSelect, onClose }) => {
   const [expanded, setExpanded] = useState(false);
   const [radiusKm, setRadiusKm] = useState(100);
   const [sortBy, setSortBy] = useState('distance');
@@ -51,11 +51,25 @@ const NearbyEarthquakes = ({ onEarthquakeSelect }) => {
     return (
       <Card sx={{ mb: 2 }}>
         <CardContent>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-            <MyLocationIcon color="disabled" />
-            <Typography variant="h6" color="text.secondary">
-              Nearby Earthquakes
-            </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <MyLocationIcon color="disabled" />
+              <Typography variant="h6" color="text.secondary">
+                Nearby Earthquakes
+              </Typography>
+            </Box>
+            {onClose && (
+              <IconButton 
+                size="small" 
+                onClick={onClose}
+                sx={{ 
+                  color: 'text.secondary',
+                  '&:hover': { color: 'text.primary' }
+                }}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            )}
           </Box>
           <Alert severity="info" sx={{ fontSize: '0.875rem' }}>
             Enable location access to see earthquakes near you
@@ -86,16 +100,17 @@ const NearbyEarthquakes = ({ onEarthquakeSelect }) => {
   return (
     <Card sx={{ mb: 2 }}>
       <CardContent>
-        <Box 
-          sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'space-between',
-            cursor: 'pointer'
-          }}
-          onClick={() => setExpanded(!expanded)}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1,
+              cursor: 'pointer',
+              flex: 1
+            }}
+            onClick={() => setExpanded(!expanded)}
+          >
             <MyLocationIcon color="primary" />
             <Typography variant="h6">
               Nearby Earthquakes
@@ -106,9 +121,23 @@ const NearbyEarthquakes = ({ onEarthquakeSelect }) => {
               color={nearbyEarthquakes.length > 0 ? "primary" : "default"}
             />
           </Box>
-          <IconButton size="small">
-            {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </IconButton>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <IconButton size="small" onClick={() => setExpanded(!expanded)}>
+              {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            </IconButton>
+            {onClose && (
+              <IconButton 
+                size="small" 
+                onClick={onClose}
+                sx={{ 
+                  color: 'text.secondary',
+                  '&:hover': { color: 'text.primary' }
+                }}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            )}
+          </Box>
         </Box>
 
         <Collapse in={expanded}>
@@ -121,7 +150,7 @@ const NearbyEarthquakes = ({ onEarthquakeSelect }) => {
                 </Typography>
                 <Slider
                   value={radiusKm}
-                  onChange={(e, value) => setRadiusKm(value)}
+                  onChange={(_, value) => setRadiusKm(value)}
                   min={10}
                   max={500}
                   step={10}
@@ -153,7 +182,7 @@ const NearbyEarthquakes = ({ onEarthquakeSelect }) => {
               </Alert>
             ) : (
               <List dense sx={{ maxHeight: 300, overflow: 'auto' }}>
-                {sortedEarthquakes.slice(0, 10).map((earthquake, index) => {
+                {sortedEarthquakes.slice(0, 10).map((earthquake) => {
                   const magnitude = earthquake.properties.mag || 0;
                   const location = earthquake.properties.place || 'Unknown location';
                   const time = earthquake.properties.time;
@@ -162,11 +191,11 @@ const NearbyEarthquakes = ({ onEarthquakeSelect }) => {
                   return (
                     <ListItem
                       key={earthquake.id}
-                      button
                       onClick={() => handleEarthquakeClick(earthquake)}
                       sx={{
                         borderRadius: 1,
                         mb: 0.5,
+                        cursor: 'pointer',
                         '&:hover': { bgcolor: 'action.hover' }
                       }}
                     >

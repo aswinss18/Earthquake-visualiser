@@ -169,7 +169,16 @@ const BookmarksPanel = ({ open, onClose, onSelectEarthquake }) => {
               Bookmarks ({bookmarks.length})
             </Typography>
           </Box>
-          <IconButton onClick={onClose} size="small">
+          <IconButton 
+            onClick={onClose} 
+            size="small"
+            sx={{
+              color: 'text.primary',
+              '&:hover': {
+                bgcolor: 'action.hover'
+              }
+            }}
+          >
             <CloseIcon />
           </IconButton>
         </Box>
