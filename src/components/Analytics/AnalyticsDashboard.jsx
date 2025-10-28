@@ -28,7 +28,11 @@ import {
   LineChart,
   Line,
   Area,
-  AreaChart
+  AreaChart,
+  ScatterChart,
+  Scatter,
+  ZAxis,
+  Legend
 } from 'recharts';
 import { useAppSelector } from '../../app/hooks.js';
 import {
@@ -124,6 +128,37 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
 
     return hours;
   }, [earthquakes]);
+
+  // Prepare data for magnitude-depth scatter plot
+  const magnitudeDepthData = useMemo(() => {
+    if (!earthquakes.length) return [];
+
+    return earthquakes
+      .filter(eq => {
+        const mag = eq.properties?.mag;
+        const depth = Math.abs(eq.geometry?.coordinates?.[2] || 0);
+        return mag !== null && mag !== undefined && depth !== null && depth !== undefined;
+      })
+      .map(eq => {
+        const mag = eq.properties.mag;
+        const depth = Math.abs(eq.geometry.coordinates[2]);
+
+        // Determine color based on magnitude
+        let fill = theme.palette.success.main;
+        if (mag >= 7.0) fill = theme.palette.error.dark;
+        else if (mag >= 5.0) fill = theme.palette.error.main;
+        else if (mag >= 3.0) fill = theme.palette.warning.main;
+
+        return {
+          magnitude: mag,
+          depth: depth,
+          location: eq.properties.place,
+          fill: fill,
+          z: mag // Size of bubble based on magnitude
+        };
+      })
+      .slice(0, 500); // Limit to 500 points for performance
+  }, [earthquakes, theme]);
 
   if (isLoading) {
     return (
@@ -307,6 +342,129 @@ const AnalyticsDashboard = ({ isLoading = false }) => {
                   </Typography>
                 </Box>
               </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Magnitude-Depth Scatter Plot (Educational) */}
+        <Grid item xs={12}>
+          <Card>
+            <CardHeader
+              title="Magnitude vs Depth Analysis"
+              subheader="Understanding earthquake depth patterns - Critical for geology students"
+              action={
+                <Chip
+                  label="Educational"
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  icon={<Typography>📚</Typography>}
+                />
+              }
+            />
+            <CardContent>
+              <Box sx={{ mb: 2, p: 1.5, bgcolor: 'info.lighter', borderRadius: 1, border: '1px solid', borderColor: 'info.main' }}>
+                <Typography variant="body2" color="info.dark" gutterBottom fontWeight={600}>
+                  💡 What this chart tells you:
+                </Typography>
+                <Typography variant="caption" color="text.secondary" component="div">
+                  • <strong>Shallow earthquakes (0-70km)</strong>: Most common and most damaging. Found at all plate boundaries.
+                  <br />
+                  • <strong>Intermediate (70-300km)</strong>: Found at subduction zones where oceanic plates dive under continental plates.
+                  <br />
+                  • <strong>Deep earthquakes (300km+)</strong>: Only occur at subduction zones. Less common but can be very powerful.
+                  <br />
+                  • <strong>Pattern to observe</strong>: Subduction zones show earthquakes at ALL depths, while transform/divergent boundaries only have shallow earthquakes.
+                </Typography>
+              </Box>
+              <ResponsiveContainer width="100%" height={400}>
+                <ScatterChart
+                  margin={{ top: 20, right: 20, bottom: 60, left: 60 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    type="number"
+                    dataKey="magnitude"
+                    name="Magnitude"
+                    label={{
+                      value: 'Magnitude',
+                      position: 'bottom',
+                      offset: 40,
+                      style: { fontSize: 14, fontWeight: 600 }
+                    }}
+                    domain={[0, 'auto']}
+                  />
+                  <YAxis
+                    type="number"
+                    dataKey="depth"
+                    name="Depth (km)"
+                    label={{
+                      value: 'Depth (km)',
+                      angle: -90,
+                      position: 'insideLeft',
+                      offset: 10,
+                      style: { fontSize: 14, fontWeight: 600 }
+                    }}
+                    reversed={true}
+                    domain={[0, 'auto']}
+                  />
+                  <ZAxis type="number" dataKey="z" range={[20, 400]} />
+                  <Tooltip
+                    cursor={{ strokeDasharray: '3 3' }}
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        const data = payload[0].payload;
+                        return (
+                          <Paper sx={{ p: 1.5, bgcolor: 'background.paper' }}>
+                            <Typography variant="body2" fontWeight={600}>
+                              Magnitude: {data.magnitude.toFixed(1)}
+                            </Typography>
+                            <Typography variant="body2">
+                              Depth: {data.depth.toFixed(0)} km
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
+                              {data.location}
+                            </Typography>
+                          </Paper>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                  <Legend
+                    verticalAlign="top"
+                    height={36}
+                    content={() => (
+                      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 1 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: theme.palette.success.main }} />
+                          <Typography variant="caption">Minor (&lt;3.0)</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: theme.palette.warning.main }} />
+                          <Typography variant="caption">Light (3.0-4.9)</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: theme.palette.error.main }} />
+                          <Typography variant="caption">Moderate (5.0-6.9)</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: theme.palette.error.dark }} />
+                          <Typography variant="caption">Major (≥7.0)</Typography>
+                        </Box>
+                      </Box>
+                    )}
+                  />
+                  <Scatter
+                    data={magnitudeDepthData}
+                    fill={theme.palette.primary.main}
+                  >
+                    {magnitudeDepthData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} />
+                    ))}
+                  </Scatter>
+                </ScatterChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
         </Grid>

@@ -12,6 +12,7 @@ import {
 import { useAppSelector } from '../app/hooks.js';
 import { useGetEarthquakesQuery } from '../features/earthquakes/earthquakeAPI.js';
 import AnalyticsDashboard from '../components/Analytics/AnalyticsDashboard.jsx';
+import ExportDataButton from '../components/Export/ExportDataButton.jsx';
 
 const AnalyticsPage = () => {
   const theme = useTheme();
@@ -38,13 +39,16 @@ const AnalyticsPage = () => {
       overflow: 'auto'
     }}>
       {/* Page Header */}
-      <Box sx={{ p: 2, pb: 1 }}>
-        <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary' }}>
-          Analytics & Insights
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Comprehensive data analysis and statistical visualization
-        </Typography>
+      <Box sx={{ p: 2, pb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+        <Box>
+          <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary' }}>
+            Analytics & Insights
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Comprehensive data analysis and statistical visualization
+          </Typography>
+        </Box>
+        <ExportDataButton variant="contained" size="medium" />
       </Box>
 
       {/* Analytics Content */}

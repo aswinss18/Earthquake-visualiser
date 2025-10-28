@@ -1,0 +1,262 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pacific-North American Boundary",
+        "type": "Transform",
+        "description": "Transform boundary including the San Andreas Fault system. Causes frequent earthquakes in California.",
+        "color": "#FFD700"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-130, 50], [-129, 49], [-128, 48.5], [-127, 48], [-126, 47.5],
+          [-125, 47], [-124, 46], [-123, 45], [-122.5, 44], [-122, 43],
+          [-121.5, 42], [-121, 41], [-120.5, 40], [-120, 39], [-119.5, 38],
+          [-119, 37], [-118.5, 36], [-118, 35], [-117.5, 34], [-117, 33],
+          [-116, 32], [-115, 31], [-114, 30]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pacific-Juan de Fuca Ridge",
+        "type": "Divergent",
+        "description": "Divergent boundary where new oceanic crust is formed. Creates mid-ocean ridge earthquakes.",
+        "color": "#4169E1"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-130, 48], [-129, 47], [-128.5, 46], [-128, 45], [-127.5, 44],
+          [-127, 43], [-126.5, 42], [-126, 41], [-125.5, 40]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Japan Trench (Subduction Zone)",
+        "type": "Convergent",
+        "description": "Subduction zone where Pacific Plate dives under the North American Plate. Causes deep, powerful earthquakes and tsunamis.",
+        "color": "#DC143C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [142, 44], [142.5, 43], [143, 42], [143.5, 41], [144, 40],
+          [144.5, 39], [145, 38], [145, 37], [144.5, 36], [144, 35],
+          [143.5, 34], [143, 33], [142.5, 32], [142, 31], [141.5, 30]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mid-Atlantic Ridge",
+        "type": "Divergent",
+        "description": "Divergent boundary separating the Eurasian and North American plates. Earthquakes are typically minor.",
+        "color": "#4169E1"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-30, 70], [-30, 65], [-31, 60], [-32, 55], [-33, 50], [-34, 45],
+          [-35, 40], [-36, 35], [-36, 30], [-35, 25], [-34, 20], [-33, 15],
+          [-32, 10], [-31, 5], [-30, 0], [-29, -5], [-28, -10], [-27, -15],
+          [-26, -20], [-25, -25], [-24, -30], [-23, -35], [-22, -40],
+          [-20, -45], [-18, -50], [-16, -55]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Andean Subduction Zone",
+        "type": "Convergent",
+        "description": "Nazca Plate subducts under the South American Plate. Causes powerful earthquakes along South America's west coast.",
+        "color": "#DC143C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-75, -5], [-76, -10], [-77, -15], [-77, -20], [-76, -25],
+          [-75, -30], [-74, -35], [-73, -40], [-72, -45], [-71, -50]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Himalayan Collision Zone",
+        "type": "Convergent",
+        "description": "Indian Plate collides with Eurasian Plate, forming the Himalayas. Continental collision causes powerful earthquakes.",
+        "color": "#DC143C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [70, 35], [72, 34.5], [74, 34], [76, 33.5], [78, 33], [80, 32.5],
+          [82, 32], [84, 31.5], [86, 31], [88, 30.5], [90, 30], [92, 29.5],
+          [94, 29], [96, 28.5], [98, 28]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Aleutian Trench",
+        "type": "Convergent",
+        "description": "Pacific Plate subducts beneath the North American Plate. Creates volcanic arc and frequent earthquakes.",
+        "color": "#DC143C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [165, 54], [170, 53], [175, 52], [180, 51], [-175, 51.5],
+          [-170, 52], [-165, 52.5], [-160, 53], [-155, 53.5], [-150, 54]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sumatra-Java Trench",
+        "type": "Convergent",
+        "description": "Indo-Australian Plate subducts under the Eurasian Plate. Site of the devastating 2004 Indian Ocean earthquake and tsunami.",
+        "color": "#DC143C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [95, 6], [96, 4], [97, 2], [98, 0], [99, -2], [100, -4],
+          [101, -6], [102, -8], [103, -10], [104, -12], [105, -14],
+          [106, -16], [107, -18], [108, -20], [109, -22]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Philippine Trench",
+        "type": "Convergent",
+        "description": "Philippine Sea Plate subducts under the Philippine Mobile Belt. Deep ocean trench with frequent seismic activity.",
+        "color": "#DC143C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [126, 10], [126.5, 9], [127, 8], [127.5, 7], [128, 6],
+          [128.5, 5], [129, 4], [129.5, 3], [130, 2]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tonga-Kermadec Trench",
+        "type": "Convergent",
+        "description": "Pacific Plate subducts under the Indo-Australian Plate. One of the most seismically active zones in the Pacific Ring of Fire.",
+        "color": "#DC143C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-175, -15], [-175.5, -17], [-176, -19], [-176.5, -21],
+          [-177, -23], [-177.5, -25], [-178, -27], [-178.5, -29],
+          [-179, -31], [-179.5, -33], [180, -35], [179.5, -37]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "East Pacific Rise",
+        "type": "Divergent",
+        "description": "Major mid-ocean ridge where the Pacific and Nazca plates are spreading apart. Creates new oceanic crust.",
+        "color": "#4169E1"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-110, 20], [-109, 18], [-108, 16], [-107, 14], [-106, 12],
+          [-105, 10], [-105, 8], [-105, 6], [-105, 4], [-105, 2],
+          [-105, 0], [-105, -2], [-106, -4], [-107, -6], [-108, -8],
+          [-109, -10], [-110, -12], [-111, -14], [-112, -16], [-113, -18],
+          [-114, -20], [-115, -22], [-116, -24], [-117, -26], [-118, -28]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Anatolian Fault",
+        "type": "Transform",
+        "description": "Major transform fault in Turkey where the Anatolian Plate slides past the Eurasian Plate. Causes destructive earthquakes.",
+        "color": "#FFD700"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [26, 40], [27, 40.2], [28, 40.4], [29, 40.5], [30, 40.6],
+          [31, 40.7], [32, 40.8], [33, 40.9], [34, 41], [35, 41.1],
+          [36, 41.2], [37, 41.2], [38, 41.1], [39, 41], [40, 40.9],
+          [41, 40.8], [42, 40.7], [43, 40.5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "New Zealand Alpine Fault",
+        "type": "Transform",
+        "description": "Transform boundary between the Pacific and Australian plates. Capable of producing magnitude 8+ earthquakes.",
+        "color": "#FFD700"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [166, -45.5], [167, -45], [168, -44.5], [169, -44], [170, -43.5],
+          [171, -43], [172, -42.5], [172.5, -42], [173, -41.5], [173.5, -41],
+          [174, -40.5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Caribbean-North American Boundary",
+        "type": "Transform",
+        "description": "Transform boundary with both strike-slip and subduction components. Causes earthquakes in Haiti and surrounding regions.",
+        "color": "#FFD700"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-85, 11], [-83, 12], [-81, 13], [-79, 14], [-77, 15],
+          [-75, 16], [-73, 17], [-71, 18], [-69, 19], [-67, 19.5],
+          [-65, 20], [-63, 20.5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Central American Trench",
+        "type": "Convergent",
+        "description": "Cocos Plate subducts under the Caribbean Plate. Creates volcanic activity and earthquakes throughout Central America.",
+        "color": "#DC143C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-92, 14], [-91, 13.5], [-90, 13], [-89, 12.5], [-88, 12],
+          [-87, 11.5], [-86, 11], [-85, 10.5], [-84, 10], [-83, 9.5]
+        ]
+      }
+    }
+  ]
+}

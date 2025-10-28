@@ -4,8 +4,8 @@
 
 import React, { useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
-import { Box, Paper, Fab, Tooltip, Typography } from '@mui/material';
-import { MyLocation as MyLocationIcon, Layers as LayersIcon } from '@mui/icons-material';
+import { Box, Paper, Fab, Tooltip, Typography, Switch, FormControlLabel } from '@mui/material';
+import { MyLocation as MyLocationIcon, Layers as LayersIcon, Public as PublicIcon } from '@mui/icons-material';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -17,6 +17,7 @@ import { selectFilteredEarthquakes } from '../../features/earthquakes/earthquake
 import { updateMapView } from '../../features/map/mapSlice.js';
 import EarthquakeMarkers from './EarthquakeMarkers.jsx';
 import MapLegend from './MapLegend.jsx';
+import TectonicPlatesOverlay from './TectonicPlatesOverlay.jsx';
 
 // Fix for default markers in react-leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -109,6 +110,7 @@ const LeafletMap = ({ height = '500px' }) => {
   const earthquakes = useAppSelector(selectFilteredEarthquakes);
   const mapState = useAppSelector(state => state.map);
   const [tileLayer, setTileLayer] = useState('openstreetmap');
+  const [showTectonicPlates, setShowTectonicPlates] = useState(true);
 
   const tileLayerOptions = {
     openstreetmap: {
@@ -157,9 +159,44 @@ const LeafletMap = ({ height = '500px' }) => {
         
         <MapEventHandler />
         <EarthquakeMarkers earthquakes={earthquakes} />
-        
-        {/* Zoom Control */}
-        <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 1000 }}>
+
+        {/* Tectonic Plates Overlay */}
+        <TectonicPlatesOverlay visible={showTectonicPlates} />
+
+        {/* Map Controls */}
+        <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 1000, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          {/* Tectonic Plates Toggle */}
+          <Paper
+            elevation={2}
+            sx={{
+              px: 1.5,
+              py: 0.5,
+              bgcolor: 'background.paper',
+              borderRadius: 2
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showTectonicPlates}
+                  onChange={(e) => setShowTectonicPlates(e.target.checked)}
+                  size="small"
+                  color="primary"
+                />
+              }
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <PublicIcon fontSize="small" />
+                  <Typography variant="caption" fontWeight={500}>
+                    Tectonic Plates
+                  </Typography>
+                </Box>
+              }
+              sx={{ m: 0 }}
+            />
+          </Paper>
+
+          {/* Map Layer Toggle */}
           <Tooltip title="Change map layer">
             <Fab
               size="small"
