@@ -3,7 +3,7 @@
  * Modern landing page with user guide
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container,
@@ -18,13 +18,6 @@ import {
   Slide,
   Chip,
   Stack,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Divider
 } from '@mui/material';
 import {
@@ -34,18 +27,13 @@ import {
   Notifications as AlertIcon,
   TrendingUp as TrendIcon,
   Security as SafetyIcon,
-  ExpandMore as ExpandMoreIcon,
-  PlayArrow as PlayIcon,
-  Dashboard as DashboardIcon,
-  Search as SearchIcon,
-  Bookmark as BookmarkIcon
+  PlayArrow as PlayIcon
 } from '@mui/icons-material';
 import SimpleGlobe3D from '../components/SimpleGlobe3D';
 
-const LandingPage = ({ onGetStarted }) => {
+const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [expandedGuide, setExpandedGuide] = useState(false);
 
   const features = [
     {
@@ -86,63 +74,7 @@ const LandingPage = ({ onGetStarted }) => {
     }
   ];
 
-  const guideSteps = [
-    {
-      title: 'Dashboard Overview',
-      icon: <DashboardIcon />,
-      description: 'Get a comprehensive overview of recent earthquake activity',
-      steps: [
-        'View real-time earthquake statistics and counts',
-        'See recent significant earthquakes in your area',
-        'Monitor global seismic activity trends',
-        'Access quick filters for magnitude and time periods'
-      ]
-    },
-    {
-      title: 'Interactive Map',
-      icon: <MapIcon />,
-      description: 'Explore earthquakes on an interactive world map',
-      steps: [
-        'Click on earthquake markers to view detailed information',
-        'Use zoom and pan controls to navigate the map',
-        'Toggle different map layers (satellite, terrain, etc.)',
-        'Filter earthquakes by magnitude, depth, and time range'
-      ]
-    },
-    {
-      title: 'Search & Filter',
-      icon: <SearchIcon />,
-      description: 'Find specific earthquakes using advanced filters',
-      steps: [
-        'Search by location, magnitude, or date range',
-        'Apply multiple filters simultaneously',
-        'Sort results by various criteria',
-        'Export filtered data for analysis'
-      ]
-    },
-    {
-      title: 'Analytics & Trends',
-      icon: <AnalyticsIcon />,
-      description: 'Analyze earthquake patterns and statistics',
-      steps: [
-        'View magnitude distribution charts',
-        'Analyze temporal patterns and trends',
-        'Compare regional earthquake activity',
-        'Generate custom reports and visualizations'
-      ]
-    },
-    {
-      title: 'Bookmarks & Alerts',
-      icon: <BookmarkIcon />,
-      description: 'Save interesting earthquakes and set up notifications',
-      steps: [
-        'Bookmark earthquakes for later reference',
-        'Set up magnitude-based alert thresholds',
-        'Receive notifications for significant events',
-        'Manage your saved earthquake collection'
-      ]
-    }
-  ];
+
 
   return (
     <Box
@@ -176,7 +108,7 @@ const LandingPage = ({ onGetStarted }) => {
             <Stack direction="row" spacing={2}>
               <Button
                 variant="text"
-                onClick={() => setExpandedGuide(!expandedGuide)}
+                onClick={onShowUserGuide}
                 sx={{ color: '#6b7280', textTransform: 'none' }}
               >
                 User Guide
@@ -281,7 +213,7 @@ const LandingPage = ({ onGetStarted }) => {
                   <Button
                     variant="outlined"
                     size="large"
-                    onClick={() => setExpandedGuide(true)}
+                    onClick={onShowUserGuide}
                     sx={{
                       py: 2,
                       px: 4,
@@ -346,6 +278,7 @@ const LandingPage = ({ onGetStarted }) => {
                     zIndex: 2,
                     borderRadius: 2,
                     overflow: 'hidden',
+                     borderRadius: '40%',
               
                   }}
                 >
@@ -357,111 +290,7 @@ const LandingPage = ({ onGetStarted }) => {
         </Grid>
       </Container>
 
-      {/* User Guide Section */}
-      {expandedGuide && (
-        <Box sx={{ bgcolor: 'white', py: 8, borderTop: '1px solid #e5e7eb' }}>
-          <Container maxWidth="lg">
-            <Typography
-              variant="h4"
-              component="h2"
-              textAlign="center"
-              gutterBottom
-              sx={{ 
-                mb: 2, 
-                fontWeight: 700,
-                color: '#111827'
-              }}
-            >
-              User Guide
-            </Typography>
-            <Typography
-              variant="body1"
-              textAlign="center"
-              sx={{ 
-                mb: 6, 
-                color: '#6b7280',
-                maxWidth: 600,
-                mx: 'auto'
-              }}
-            >
-              Learn how to make the most of the Earthquake Visualizer with this comprehensive guide
-            </Typography>
 
-            <Grid container spacing={3}>
-              {guideSteps.map((step, index) => (
-                <Grid item xs={12} md={6} key={index}>
-                  <Accordion
-                    sx={{
-                      boxShadow: 'none',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: 2,
-                      '&:before': { display: 'none' },
-                      mb: 2
-                    }}
-                  >
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      sx={{
-                        '& .MuiAccordionSummary-content': {
-                          alignItems: 'center',
-                          gap: 2
-                        }
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: '50%',
-                          bgcolor: '#f3f4f6',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
-                        {React.cloneElement(step.icon, { sx: { fontSize: 20, color: '#3b82f6' } })}
-                      </Box>
-                      <Box>
-                        <Typography variant="h6" sx={{ fontWeight: 600, color: '#111827' }}>
-                          {step.title}
-                        </Typography>
-                        <Typography variant="body2" sx={{ color: '#6b7280' }}>
-                          {step.description}
-                        </Typography>
-                      </Box>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <List dense>
-                        {step.steps.map((stepItem, stepIndex) => (
-                          <ListItem key={stepIndex} sx={{ pl: 0 }}>
-                            <ListItemIcon sx={{ minWidth: 32 }}>
-                              <Box
-                                sx={{
-                                  width: 6,
-                                  height: 6,
-                                  borderRadius: '50%',
-                                  bgcolor: '#3b82f6'
-                                }}
-                              />
-                            </ListItemIcon>
-                            <ListItemText 
-                              primary={stepItem}
-                              primaryTypographyProps={{
-                                variant: 'body2',
-                                color: '#4b5563'
-                              }}
-                            />
-                          </ListItem>
-                        ))}
-                      </List>
-                    </AccordionDetails>
-                  </Accordion>
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </Box>
-      )}
 
       {/* Features Section */}
       <Box sx={{ bgcolor: '#fafafa', py: 12 }}>

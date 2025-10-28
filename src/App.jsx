@@ -32,6 +32,7 @@ import Sidebar from './components/Layout/Sidebar.jsx';
 
 // Pages
 import LandingPage from './pages/LandingPage.jsx';
+import UserGuidePage from './pages/UserGuidePage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import MapPage from './pages/MapPage.jsx';
 import AnalyticsPage from './pages/AnalyticsPage.jsx';
@@ -65,6 +66,11 @@ function App() {
     const currentPath = window.location.pathname;
     // Show landing page only when at root path "/"
     return currentPath === '/';
+  });
+  
+  const [showUserGuide, setShowUserGuide] = useState(() => {
+    const currentPath = window.location.pathname;
+    return currentPath === '/guide';
   });
   
   // Local state for layout
@@ -125,8 +131,25 @@ function App() {
   // Handle get started from landing page
   const handleGetStarted = () => {
     setShowLanding(false);
+    setShowUserGuide(false);
     // Update URL to /app
     window.history.pushState({}, '', '/app');
+  };
+
+  // Handle show user guide
+  const handleShowUserGuide = () => {
+    setShowLanding(false);
+    setShowUserGuide(true);
+    // Update URL to /guide
+    window.history.pushState({}, '', '/guide');
+  };
+
+  // Handle back to landing from user guide
+  const handleBackToLanding = () => {
+    setShowUserGuide(false);
+    setShowLanding(true);
+    // Update URL to /
+    window.history.pushState({}, '', '/');
   };
 
   // Handle browser back/forward navigation
@@ -135,8 +158,13 @@ function App() {
       const currentPath = window.location.pathname;
       if (currentPath === '/app') {
         setShowLanding(false);
+        setShowUserGuide(false);
+      } else if (currentPath === '/guide') {
+        setShowLanding(false);
+        setShowUserGuide(true);
       } else if (currentPath === '/') {
         setShowLanding(true);
+        setShowUserGuide(false);
       }
     };
 
@@ -198,7 +226,12 @@ function App() {
 
   // Show landing page if not started
   if (showLanding) {
-    return <LandingPage onGetStarted={handleGetStarted} />;
+    return <LandingPage onGetStarted={handleGetStarted} onShowUserGuide={handleShowUserGuide} />;
+  }
+
+  // Show user guide page
+  if (showUserGuide) {
+    return <UserGuidePage onBack={handleBackToLanding} />;
   }
 
   return (
