@@ -27,6 +27,9 @@ const initialState = {
   showSatelliteLayer: false,
   showTerrainLayer: false,
   
+  // Base map layer
+  baseLayer: 'openstreetmap',
+  
   // Map interaction state
   isInteracting: false,
   lastInteraction: null,
@@ -87,6 +90,13 @@ const mapSlice = createSlice({
         default:
           break;
       }
+    },
+
+    /**
+     * Set base map layer
+     */
+    setBaseLayer: (state, action) => {
+      state.baseLayer = action.payload;
     },
 
     /**
@@ -221,6 +231,7 @@ export const {
   updateMapView,
   setMapInstance,
   toggleLayer,
+  setBaseLayer,
   setMapInteracting,
   updateClusteringSettings,
   toggleMapControls,

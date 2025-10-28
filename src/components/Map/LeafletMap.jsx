@@ -24,7 +24,8 @@ import {
   setLocationLoading, 
   setUserLocation, 
   setLocationError,
-  toggleUserLocation
+  toggleUserLocation,
+  setBaseLayer
 } from '../../features/map/mapSlice.js';
 import EarthquakeMarkers from './EarthquakeMarkers.jsx';
 import UserLocationMarker from './UserLocationMarker.jsx';
@@ -168,7 +169,6 @@ const LeafletMap = ({ height = '500px' }) => {
   const dispatch = useAppDispatch();
   const earthquakes = useAppSelector(selectFilteredEarthquakes);
   const mapState = useAppSelector(state => state.map);
-  const [tileLayer, setTileLayer] = useState('openstreetmap');
   const [showLocationSuccess, setShowLocationSuccess] = useState(false);
 
 
@@ -189,9 +189,9 @@ const LeafletMap = ({ height = '500px' }) => {
 
   const toggleTileLayer = () => {
     const layers = Object.keys(tileLayerOptions);
-    const currentIndex = layers.indexOf(tileLayer);
+    const currentIndex = layers.indexOf(mapState.baseLayer);
     const nextIndex = (currentIndex + 1) % layers.length;
-    setTileLayer(layers[nextIndex]);
+    dispatch(setBaseLayer(layers[nextIndex]));
   };
 
   return (
@@ -213,8 +213,8 @@ const LeafletMap = ({ height = '500px' }) => {
         attributionControl={true}
       >
         <TileLayer
-          url={tileLayerOptions[tileLayer].url}
-          attribution={tileLayerOptions[tileLayer].attribution}
+          url={tileLayerOptions[mapState.baseLayer].url}
+          attribution={tileLayerOptions[mapState.baseLayer].attribution}
         />
         
         <MapEventHandler />

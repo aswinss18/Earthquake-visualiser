@@ -23,19 +23,21 @@ import {
   ZoomIn as ZoomInIcon,
   ZoomOut as ZoomOutIcon
 } from '@mui/icons-material';
-import { useAppSelector } from '../app/hooks.js';
+import { useAppSelector, useAppDispatch } from '../app/hooks.js';
 import { useGetEarthquakesQuery } from '../features/earthquakes/earthquakeAPI.js';
+import { setBaseLayer, setLocationLoading } from '../features/map/mapSlice.js';
 import LeafletMap from '../components/Map/LeafletMap.jsx';
 import FilterPanel from '../components/Filters/FilterPanel.jsx';
 import NearbyEarthquakes from '../components/Location/NearbyEarthquakes.jsx';
 
 const MapPage = ({ onEarthquakeSelect }) => {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [mapLayer, setMapLayer] = useState('openstreetmap');
 
   const timePeriod = useAppSelector(state => state.filters.timePeriod);
+  const mapLayer = useAppSelector(state => state.map.baseLayer);
 
   const {
     data: earthquakeData,
@@ -50,8 +52,33 @@ const MapPage = ({ onEarthquakeSelect }) => {
 
   const handleLayerChange = (event, newLayer) => {
     if (newLayer !== null) {
-      setMapLayer(newLayer);
+      dispatch(setBaseLayer(newLayer));
     }
+  };
+
+  const handleMyLocation = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by this browser.');
+      return;
+    }
+
+    dispatch(setLocationLoading(true));
+    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // The LeafletMap component will handle the actual location setting
+        // This just triggers the location request
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+        dispatch(setLocationLoading(false));
+      },
+      { 
+        timeout: 15000, 
+        enableHighAccuracy: true,
+        maximumAge: 300000
+      }
+    );
   };
 
   const toggleFullscreen = () => {
@@ -115,7 +142,6 @@ const MapPage = ({ onEarthquakeSelect }) => {
             isLoading={isLoading}
             error={error}
             onEarthquakeSelect={onEarthquakeSelect}
-            mapLayer={mapLayer}
           />
 
           {/* Map Controls */}
@@ -171,7 +197,7 @@ const MapPage = ({ onEarthquakeSelect }) => {
                   </Tooltip>
 
                   <Tooltip title="My Location">
-                    <IconButton>
+                    <IconButton onClick={handleMyLocation}>
                       <MyLocationIcon />
                     </IconButton>
                   </Tooltip>
