@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "mui-docs": {
+      "command": "uvx",
+      "args": ["mui-mcp-server@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "search_components",
+        "get_component_docs",
+        "search_api",
+        "get_api_docs",
+        "search_guides",
+        "get_guide_content"
+      ]
+    }
+  }
+}
