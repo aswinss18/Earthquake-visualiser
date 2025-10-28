@@ -31,6 +31,7 @@ import { useBookmarks } from './components/Bookmarks/BookmarksPanel.jsx';
 import Sidebar from './components/Layout/Sidebar.jsx';
 
 // Pages
+import LandingPage from './pages/LandingPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import MapPage from './pages/MapPage.jsx';
 import AnalyticsPage from './pages/AnalyticsPage.jsx';
@@ -59,6 +60,13 @@ function App() {
   const timePeriod = useAppSelector(state => state.filters.timePeriod);
   const earthquakeUI = useAppSelector(state => state.earthquakes);
 
+  // Handle routing based on current path
+  const [showLanding, setShowLanding] = useState(() => {
+    const currentPath = window.location.pathname;
+    // Show landing page only when at root path "/"
+    return currentPath === '/';
+  });
+  
   // Local state for layout
   const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -114,6 +122,28 @@ function App() {
     setCurrentPage(pageId);
   };
 
+  // Handle get started from landing page
+  const handleGetStarted = () => {
+    setShowLanding(false);
+    // Update URL to /app
+    window.history.pushState({}, '', '/app');
+  };
+
+  // Handle browser back/forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      const currentPath = window.location.pathname;
+      if (currentPath === '/app') {
+        setShowLanding(false);
+      } else if (currentPath === '/') {
+        setShowLanding(true);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   // Calculate main content margins
   const getMainContentMargin = () => {
     if (isMobile) return 0;
@@ -165,6 +195,11 @@ function App() {
     };
     return titles[currentPage] || 'Dashboard';
   };
+
+  // Show landing page if not started
+  if (showLanding) {
+    return <LandingPage onGetStarted={handleGetStarted} />;
+  }
 
   return (
     <Box sx={{
