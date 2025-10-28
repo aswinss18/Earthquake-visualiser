@@ -35,6 +35,33 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
+  // Floating objects animation keyframes
+  const floatingAnimation = {
+    '@keyframes float1': {
+      '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+      '50%': { transform: 'translateY(-20px) rotate(180deg)' },
+    },
+    '@keyframes float2': {
+      '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+      '50%': { transform: 'translateY(-15px) rotate(-180deg)' },
+    },
+    '@keyframes float3': {
+      '0%, 100%': { transform: 'translateY(0px) scale(1)' },
+      '50%': { transform: 'translateY(-25px) scale(1.1)' },
+    },
+    '@keyframes pulse': {
+      '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
+      '50%': { opacity: 1, transform: 'scale(1.05)' },
+    },
+    '@keyframes drift': {
+      '0%': { transform: 'translateX(0px) translateY(0px)' },
+      '25%': { transform: 'translateX(10px) translateY(-10px)' },
+      '50%': { transform: 'translateX(-5px) translateY(-20px)' },
+      '75%': { transform: 'translateX(-10px) translateY(-10px)' },
+      '100%': { transform: 'translateX(0px) translateY(0px)' },
+    },
+  };
+
   const features = [
     {
       icon: <EarthIcon />,
@@ -81,8 +108,149 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
         bgcolor: "#fafafa",
         display: "flex",
         flexDirection: "column",
+        position: "relative",
+        overflow: "hidden",
+        ...floatingAnimation,
       }}
     >
+      {/* Floating Background Objects */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "10%",
+          left: "5%",
+          width: 60,
+          height: 60,
+          borderRadius: "50%",
+          bgcolor: "rgba(59, 130, 246, 0.1)",
+          animation: "float1 6s ease-in-out infinite",
+          zIndex: 0,
+        }}
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          top: "20%",
+          right: "8%",
+          width: 40,
+          height: 40,
+          borderRadius: "50%",
+          bgcolor: "rgba(16, 185, 129, 0.15)",
+          animation: "float2 8s ease-in-out infinite",
+          zIndex: 0,
+        }}
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          top: "60%",
+          left: "3%",
+          width: 80,
+          height: 80,
+          borderRadius: "50%",
+          bgcolor: "rgba(139, 92, 246, 0.08)",
+          animation: "float3 10s ease-in-out infinite",
+          zIndex: 0,
+        }}
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          top: "70%",
+          right: "15%",
+          width: 50,
+          height: 50,
+          borderRadius: "50%",
+          bgcolor: "rgba(245, 158, 11, 0.12)",
+          animation: "pulse 4s ease-in-out infinite",
+          zIndex: 0,
+        }}
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          top: "40%",
+          left: "85%",
+          width: 35,
+          height: 35,
+          borderRadius: "50%",
+          bgcolor: "rgba(239, 68, 68, 0.1)",
+          animation: "drift 12s ease-in-out infinite",
+          zIndex: 0,
+        }}
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          top: "85%",
+          left: "20%",
+          width: 25,
+          height: 25,
+          borderRadius: "50%",
+          bgcolor: "rgba(6, 182, 212, 0.15)",
+          animation: "float1 7s ease-in-out infinite",
+          zIndex: 0,
+        }}
+      />
+      
+      {/* Seismic Wave Rings */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "15%",
+          right: "25%",
+          width: 120,
+          height: 120,
+          border: "2px solid rgba(59, 130, 246, 0.2)",
+          borderRadius: "50%",
+          animation: "pulse 8s ease-in-out infinite",
+          zIndex: 0,
+        }}
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          top: "75%",
+          right: "5%",
+          width: 90,
+          height: 90,
+          border: "1px solid rgba(16, 185, 129, 0.25)",
+          borderRadius: "50%",
+          animation: "float2 9s ease-in-out infinite",
+          zIndex: 0,
+        }}
+      />
+      
+      {/* Geometric patterns */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "30%",
+          left: "15%",
+          width: 0,
+          height: 0,
+          borderLeft: "15px solid transparent",
+          borderRight: "15px solid transparent",
+          borderBottom: "25px solid rgba(245, 158, 11, 0.15)",
+          animation: "float3 7s ease-in-out infinite",
+          zIndex: 0,
+        }}
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          right: "30%",
+          width: 30,
+          height: 30,
+          bgcolor: "rgba(139, 92, 246, 0.1)",
+          transform: "rotate(45deg)",
+          animation: "drift 9s ease-in-out infinite",
+          zIndex: 0,
+        }}
+      />
+      
+
       {/* Navigation Bar */}
       <Box
         sx={{
@@ -140,7 +308,8 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
       </Box>
 
       {/* Hero Section */}
-      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 }, position: "relative", zIndex: 1 }}>
+
         <Grid container spacing={8} alignItems="center">
           <Grid item xs={12} md={6}>
             <Fade in timeout={1000}>
@@ -299,13 +468,67 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                   position: "relative",
                 }}
               >
-                {/* Background decoration */}
+                {/* Background decoration with floating elements */}
                 <Box
                   sx={{
                     position: "absolute",
                     width: 450,
                     height: 450,
                     borderRadius: "50%",
+                  }}
+                />
+                
+                {/* Floating seismic indicators around globe */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "10%",
+                    left: "10%",
+                    width: 12,
+                    height: 12,
+                    borderRadius: "50%",
+                    bgcolor: "#ef4444",
+                    animation: "pulse 3s ease-in-out infinite",
+                    boxShadow: "0 0 20px rgba(239, 68, 68, 0.5)",
+                  }}
+                />
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "20%",
+                    right: "15%",
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    bgcolor: "#f59e0b",
+                    animation: "float1 4s ease-in-out infinite",
+                    boxShadow: "0 0 15px rgba(245, 158, 11, 0.4)",
+                  }}
+                />
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: "25%",
+                    left: "20%",
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    bgcolor: "#10b981",
+                    animation: "float2 5s ease-in-out infinite",
+                    boxShadow: "0 0 18px rgba(16, 185, 129, 0.4)",
+                  }}
+                />
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: "15%",
+                    right: "25%",
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    bgcolor: "#3b82f6",
+                    animation: "drift 6s ease-in-out infinite",
+                    boxShadow: "0 0 12px rgba(59, 130, 246, 0.5)",
                   }}
                 />
 
@@ -329,8 +552,35 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
       </Container>
 
       {/* Features Section */}
-      <Box sx={{ bgcolor: "#fafafa", py: 12 }}>
-        <Container maxWidth="lg">
+      <Box sx={{ bgcolor: "#fafafa", py: 12, position: "relative" }}>
+        {/* Additional floating elements for features section */}
+        <Box
+          sx={{
+            position: "absolute",
+            top: "20%",
+            left: "2%",
+            width: 30,
+            height: 30,
+            borderRadius: "50%",
+            bgcolor: "rgba(139, 92, 246, 0.1)",
+            animation: "float3 8s ease-in-out infinite",
+            zIndex: 0,
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            top: "60%",
+            right: "5%",
+            width: 45,
+            height: 45,
+            borderRadius: "50%",
+            bgcolor: "rgba(59, 130, 246, 0.08)",
+            animation: "pulse 6s ease-in-out infinite",
+            zIndex: 0,
+          }}
+        />
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
           <Fade in timeout={1500}>
             <div>
               <Typography
@@ -436,8 +686,37 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           py: 8,
           borderTop: "1px solid #e5e7eb",
           bgcolor: "#111827",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
+        {/* Subtle floating elements in footer */}
+        <Box
+          sx={{
+            position: "absolute",
+            top: "30%",
+            left: "10%",
+            width: 20,
+            height: 20,
+            borderRadius: "50%",
+            bgcolor: "rgba(59, 130, 246, 0.2)",
+            animation: "float1 10s ease-in-out infinite",
+            zIndex: 0,
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            top: "60%",
+            right: "15%",
+            width: 15,
+            height: 15,
+            borderRadius: "50%",
+            bgcolor: "rgba(16, 185, 129, 0.15)",
+            animation: "drift 8s ease-in-out infinite",
+            zIndex: 0,
+          }}
+        />
         <Container maxWidth="lg">
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
