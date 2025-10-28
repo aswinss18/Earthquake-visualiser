@@ -148,6 +148,7 @@ const Sidebar = ({
               minWidth: 0,
               mr: collapsed ? 0 : 3,
               justifyContent: "center",
+              color: isActive ? "inherit" : "text.secondary",
             }}
           >
             <Badge badgeContent={badgeContent} color="error">
@@ -165,7 +166,8 @@ const Sidebar = ({
               }}
               secondaryTypographyProps={{
                 fontSize: 12,
-                opacity: 0.7,
+                opacity: isActive ? 0.9 : 0.7,
+                color: isActive ? "inherit" : "text.secondary",
               }}
             />
           )}
@@ -226,6 +228,10 @@ const Sidebar = ({
                 size="small"
                 sx={{
                   color: "text.secondary",
+                  "&:hover": {
+                    color: "text.primary",
+                    bgcolor: "action.hover",
+                  },
                 }}
               >
                 <MenuOpenIcon />
@@ -252,6 +258,10 @@ const Sidebar = ({
               size="small"
               sx={{
                 color: "text.secondary",
+                "&:hover": {
+                  color: "text.primary",
+                  bgcolor: "action.hover",
+                },
               }}
             >
               <MenuIcon />
