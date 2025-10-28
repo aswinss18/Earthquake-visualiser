@@ -6,7 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    open: true
+    open: true,
+    allowedHosts: ['l2kftt-3000.csb.app']
   },
   build: {
     outDir: 'dist',

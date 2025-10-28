@@ -158,7 +158,6 @@ const LandingPage = ({ onGetStarted }) => {
       {/* Navigation Bar */}
       <Box
         sx={{
-          bgcolor: 'white',
           borderBottom: '1px solid #e5e7eb',
           py: 2,
           position: 'sticky',

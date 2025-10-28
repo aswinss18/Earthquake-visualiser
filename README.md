@@ -25,23 +25,27 @@ A modern, real-time earthquake visualization application built for geography stu
 ## 📦 Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-username/earthquake-visualizer.git
    cd earthquake-visualizer
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration (optional - defaults work out of the box)
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -54,22 +58,26 @@ A modern, real-time earthquake visualization application built for geography stu
 The application includes comprehensive location services to help you understand earthquake activity relative to your position:
 
 ### 🎯 Find My Location
+
 - Click the location button (📍) on the map to find and mark your current position
 - Your location is displayed with a blue marker and accuracy circle
 - Location data is stored in the app state for the session
 
 ### 🌐 Nearby Earthquakes
+
 - View earthquakes within a customizable radius of your location (10-500 km)
 - Sort nearby earthquakes by distance, magnitude, or time
 - See exact distance calculations for each earthquake
 - Expandable panel shows up to 10 closest earthquakes with details
 
 ### 📏 Distance Calculations
+
 - All earthquake markers show distance from your location in popups
 - Distances displayed in meters (< 1km) or kilometers
 - Uses the Haversine formula for accurate geographic calculations
 
 ### 🔒 Privacy & Permissions
+
 - Location access requires browser permission
 - Location data is only stored locally in your browser session
 - No location data is sent to external servers
@@ -120,6 +128,7 @@ earthquake-visualizer/
 ## 🌟 Development Phases
 
 ### ✅ Phase 1: Foundation (Complete)
+
 - Redux store setup with RTK Query
 - USGS API integration
 - State management architecture
@@ -127,12 +136,14 @@ earthquake-visualizer/
 - MUI + Tailwind CSS integration
 
 ### 🚧 Phase 2: Interactive Map (Next)
+
 - Leaflet map implementation
 - Earthquake markers with clustering
 - Map controls and interactions
 - Real-time data visualization
 
 ### 📋 Phase 3: UI & Filters (Planned)
+
 - Filter panel with advanced options
 - Earthquake details panel
 - Statistics dashboard
@@ -141,12 +152,14 @@ earthquake-visualizer/
 ## 🎯 Key Features Implementation
 
 ### Real-time Data Fetching
+
 ```javascript
 // RTK Query automatically handles caching, loading states, and errors
-const { data, isLoading, error } = useGetEarthquakesQuery('day');
+const { data, isLoading, error } = useGetEarthquakesQuery("day");
 ```
 
 ### Smart State Management
+
 ```javascript
 // Memoized selectors for optimal performance
 const filteredEarthquakes = useAppSelector(selectFilteredEarthquakes);
@@ -154,6 +167,7 @@ const statistics = useAppSelector(selectEarthquakeStatistics);
 ```
 
 ### Responsive Design
+
 - Mobile-first approach with Tailwind CSS
 - MUI components for complex interactions
 - Optimized touch controls for mobile devices
@@ -161,6 +175,7 @@ const statistics = useAppSelector(selectEarthquakeStatistics);
 ## 🔌 API Integration
 
 The app uses the USGS Earthquake API:
+
 - **Endpoint**: `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/`
 - **Data Format**: GeoJSON
 - **Update Frequency**: Real-time
@@ -169,12 +184,14 @@ The app uses the USGS Earthquake API:
 ## 🎨 Design System
 
 ### Color Scheme (Earthquake Severity)
+
 - 🟢 **Minor** (< 3.0): Green (`#4ade80`)
 - 🟡 **Light** (3.0-4.9): Yellow (`#fbbf24`)
 - 🟠 **Moderate** (5.0-6.9): Orange (`#f97316`)
 - 🔴 **Major** (≥ 7.0): Red (`#ef4444`)
 
 ### Typography
+
 - **Headings**: Inter/System fonts with proper hierarchy
 - **Body**: Optimized for readability across devices
 - **Data**: Monospace for precise numerical display
@@ -182,6 +199,7 @@ The app uses the USGS Earthquake API:
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 1. Connect your GitHub repository to Vercel
 2. Configure build settings:
    - Build Command: `npm run build`
@@ -189,6 +207,7 @@ The app uses the USGS Earthquake API:
 3. Deploy automatically on push to main branch
 
 ### Netlify
+
 1. Connect repository to Netlify
 2. Set build command: `npm run build`
 3. Set publish directory: `dist`
@@ -215,6 +234,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 If you have any questions or need help, please:
+
 1. Check the [Issues](https://github.com/your-username/earthquake-visualizer/issues) page
 2. Create a new issue with detailed information
 3. Join our [Discussions](https://github.com/your-username/earthquake-visualizer/discussions)
