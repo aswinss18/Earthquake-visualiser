@@ -34,6 +34,7 @@ import SimpleGlobe3D from "../components/SimpleGlobe3D";
 const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // Floating objects animation keyframes
   const floatingAnimation = {
@@ -113,18 +114,19 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
         ...floatingAnimation,
       }}
     >
-      {/* Floating Background Objects */}
+      {/* Floating Background Objects - Responsive sizes */}
       <Box
         sx={{
           position: "absolute",
           top: "10%",
           left: "5%",
-          width: 60,
-          height: 60,
+          width: { xs: 30, sm: 45, md: 60 },
+          height: { xs: 30, sm: 45, md: 60 },
           borderRadius: "50%",
           bgcolor: "rgba(59, 130, 246, 0.1)",
           animation: "float1 6s ease-in-out infinite",
           zIndex: 0,
+          display: { xs: "none", sm: "block" },
         }}
       />
       <Box
@@ -132,8 +134,8 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           position: "absolute",
           top: "20%",
           right: "8%",
-          width: 40,
-          height: 40,
+          width: { xs: 25, sm: 30, md: 40 },
+          height: { xs: 25, sm: 30, md: 40 },
           borderRadius: "50%",
           bgcolor: "rgba(16, 185, 129, 0.15)",
           animation: "float2 8s ease-in-out infinite",
@@ -145,12 +147,13 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           position: "absolute",
           top: "60%",
           left: "3%",
-          width: 80,
-          height: 80,
+          width: { xs: 40, sm: 60, md: 80 },
+          height: { xs: 40, sm: 60, md: 80 },
           borderRadius: "50%",
           bgcolor: "rgba(139, 92, 246, 0.08)",
           animation: "float3 10s ease-in-out infinite",
           zIndex: 0,
+          display: { xs: "none", sm: "block" },
         }}
       />
       <Box
@@ -158,8 +161,8 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           position: "absolute",
           top: "70%",
           right: "15%",
-          width: 50,
-          height: 50,
+          width: { xs: 30, sm: 40, md: 50 },
+          height: { xs: 30, sm: 40, md: 50 },
           borderRadius: "50%",
           bgcolor: "rgba(245, 158, 11, 0.12)",
           animation: "pulse 4s ease-in-out infinite",
@@ -170,9 +173,9 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
         sx={{
           position: "absolute",
           top: "40%",
-          left: "85%",
-          width: 35,
-          height: 35,
+          left: { xs: "80%", md: "85%" },
+          width: { xs: 20, sm: 28, md: 35 },
+          height: { xs: 20, sm: 28, md: 35 },
           borderRadius: "50%",
           bgcolor: "rgba(239, 68, 68, 0.1)",
           animation: "drift 12s ease-in-out infinite",
@@ -184,8 +187,8 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           position: "absolute",
           top: "85%",
           left: "20%",
-          width: 25,
-          height: 25,
+          width: { xs: 15, sm: 20, md: 25 },
+          height: { xs: 15, sm: 20, md: 25 },
           borderRadius: "50%",
           bgcolor: "rgba(6, 182, 212, 0.15)",
           animation: "float1 7s ease-in-out infinite",
@@ -193,18 +196,19 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
         }}
       />
       
-      {/* Seismic Wave Rings */}
+      {/* Seismic Wave Rings - Responsive */}
       <Box
         sx={{
           position: "absolute",
           top: "15%",
-          right: "25%",
-          width: 120,
-          height: 120,
+          right: { xs: "15%", md: "25%" },
+          width: { xs: 60, sm: 90, md: 120 },
+          height: { xs: 60, sm: 90, md: 120 },
           border: "2px solid rgba(59, 130, 246, 0.2)",
           borderRadius: "50%",
           animation: "pulse 8s ease-in-out infinite",
           zIndex: 0,
+          display: { xs: "none", sm: "block" },
         }}
       />
       <Box
@@ -212,12 +216,13 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           position: "absolute",
           top: "75%",
           right: "5%",
-          width: 90,
-          height: 90,
+          width: { xs: 50, sm: 70, md: 90 },
+          height: { xs: 50, sm: 70, md: 90 },
           border: "1px solid rgba(16, 185, 129, 0.25)",
           borderRadius: "50%",
           animation: "float2 9s ease-in-out infinite",
           zIndex: 0,
+          display: { xs: "none", sm: "block" },
         }}
       />
       
@@ -251,11 +256,11 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
       />
       
 
-      {/* Navigation Bar */}
+      {/* Navigation Bar - Mobile Responsive */}
       <Box
         sx={{
           borderBottom: "1px solid #e5e7eb",
-          py: 2,
+          py: { xs: 1.5, sm: 2 },
           position: "sticky",
           top: 0,
           zIndex: 100,
@@ -263,7 +268,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           bgcolor: "rgba(255, 255, 255, 0.95)",
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 } }}>
           <Box
             sx={{
               display: "flex",
@@ -271,80 +276,112 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
               justifyContent: "space-between",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <EarthIcon sx={{ fontSize: 32, color: "#3b82f6" }} />
+            <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 1, sm: 2 } }}>
+              <EarthIcon sx={{ fontSize: { xs: 24, sm: 28, md: 32 }, color: "#3b82f6" }} />
               <Typography
-                variant="h6"
-                sx={{ fontWeight: 700, color: "#1f2937" }}
+                variant={isSmallMobile ? "subtitle1" : "h6"}
+                sx={{ 
+                  fontWeight: 700, 
+                  color: "#1f2937",
+                  fontSize: { xs: "1rem", sm: "1.1rem", md: "1.25rem" },
+                  display: { xs: isSmallMobile ? "none" : "block", sm: "block" }
+                }}
               >
                 Earthquake Visualizer
               </Typography>
+              {isSmallMobile && (
+                <Typography
+                  variant="subtitle2"
+                  sx={{ fontWeight: 700, color: "#1f2937" }}
+                >
+                  EQ Viz
+                </Typography>
+              )}
             </Box>
-            <Stack direction="row" spacing={2}>
-              <Button
-                variant="text"
-                onClick={onShowUserGuide}
-                sx={{ color: "#6b7280", textTransform: "none" }}
-              >
-                User Guide
-              </Button>
-              <Button
-                variant="contained"
-                onClick={onGetStarted}
-                startIcon={<PlayIcon />}
-                sx={{
-                  bgcolor: "#3b82f6",
-                  textTransform: "none",
-                  borderRadius: 2,
-                  px: 3,
-                  "&:hover": { bgcolor: "#2563eb" },
-                }}
-              >
-                Launch App
-              </Button>
-            </Stack>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={onGetStarted}
+              sx={{
+                bgcolor: "#3b82f6",
+                textTransform: "none",
+                borderRadius: 1.5,
+                px: 2,
+                py: 0.75,
+                fontSize: "0.8125rem",
+                fontWeight: 500,
+                "&:hover": { bgcolor: "#2563eb" },
+              }}
+            >
+              Launch
+            </Button>
           </Box>
         </Container>
       </Box>
 
-      {/* Hero Section */}
-      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 }, position: "relative", zIndex: 1 }}>
-
-        <Grid container spacing={8} alignItems="center">
+      {/* Hero Section - Mobile Responsive */}
+      <Container 
+        maxWidth="lg" 
+        sx={{ 
+          py: { xs: 4, sm: 6, md: 8, lg: 12 }, 
+          px: { xs: 2, sm: 3 },
+          position: "relative", 
+          zIndex: 1 
+        }}
+      >
+        <Grid container spacing={{ xs: 4, sm: 6, md: 8 }} alignItems="center">
           <Grid item xs={12} md={6}>
             <Fade in timeout={1000}>
               <div>
-                <Stack direction="row" spacing={1} sx={{ mb: 3 }}>
+                <Stack 
+                  direction="row" 
+                  spacing={1} 
+                  sx={{ 
+                    mb: { xs: 2, sm: 3 },
+                    justifyContent: { xs: "center", md: "flex-start" },
+                    flexWrap: "wrap",
+                    gap: 1
+                  }}
+                >
                   <Chip
                     label="Real-time Data"
-                    size="small"
+                    size={isSmallMobile ? "small" : "small"}
                     sx={{
                       bgcolor: "#dbeafe",
                       color: "#1e40af",
                       fontWeight: 500,
+                      fontSize: { xs: "0.75rem", sm: "0.8125rem" }
                     }}
                   />
                   <Chip
                     label="Educational"
-                    size="small"
+                    size={isSmallMobile ? "small" : "small"}
                     sx={{
                       bgcolor: "#dcfce7",
                       color: "#166534",
                       fontWeight: 500,
+                      fontSize: { xs: "0.75rem", sm: "0.8125rem" }
                     }}
                   />
                 </Stack>
 
                 <Typography
-                  variant={isMobile ? "h3" : "h2"}
+                  variant={isSmallMobile ? "h4" : isMobile ? "h3" : "h2"}
                   component="h1"
                   gutterBottom
                   sx={{
                     fontWeight: 800,
                     color: "#111827",
-                    mb: 3,
+                    mb: { xs: 2, sm: 3 },
                     letterSpacing: "-0.025em",
                     lineHeight: 1.1,
+                    textAlign: { xs: "center", md: "left" },
+                    fontSize: { 
+                      xs: "1.75rem", 
+                      sm: "2.25rem", 
+                      md: "2.75rem", 
+                      lg: "3.5rem" 
+                    }
                   }}
                 >
                   Visualize Earth's
@@ -357,14 +394,21 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                 </Typography>
 
                 <Typography
-                  variant="h6"
+                  variant={isSmallMobile ? "body1" : "h6"}
                   paragraph
                   sx={{
-                    mb: 4,
+                    mb: { xs: 3, sm: 4 },
                     lineHeight: 1.6,
                     color: "#6b7280",
                     fontWeight: 400,
-                    maxWidth: 500,
+                    maxWidth: { xs: "100%", md: 500 },
+                    textAlign: { xs: "center", md: "left" },
+                    fontSize: { 
+                      xs: "1rem", 
+                      sm: "1.125rem", 
+                      md: "1.25rem" 
+                    },
+                    px: { xs: 1, sm: 0 }
                   }}
                 >
                   Explore real-time earthquake data from USGS with interactive
@@ -375,23 +419,29 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                 <Stack
                   direction={{ xs: "column", sm: "row" }}
                   spacing={2}
-                  sx={{ mb: 6 }}
+                  sx={{ 
+                    mb: { xs: 4, sm: 6 },
+                    alignItems: "center",
+                    justifyContent: { xs: "center", md: "flex-start" }
+                  }}
                 >
                   <Button
                     variant="contained"
-                    size="large"
+                    size={isSmallMobile ? "medium" : "large"}
                     onClick={onGetStarted}
-                    startIcon={<PlayIcon />}
+                    startIcon={!isSmallMobile ? <PlayIcon /> : null}
                     sx={{
-                      py: 2,
-                      px: 4,
-                      fontSize: "1rem",
+                      py: { xs: 1.5, sm: 2 },
+                      px: { xs: 3, sm: 4 },
+                      fontSize: { xs: "0.875rem", sm: "1rem" },
                       fontWeight: 600,
                       borderRadius: 2,
                       bgcolor: "#3b82f6",
                       color: "white",
                       textTransform: "none",
                       boxShadow: "0 4px 14px 0 rgba(59, 130, 246, 0.3)",
+                      width: { xs: "100%", sm: "auto" },
+                      maxWidth: { xs: "280px", sm: "none" },
                       "&:hover": {
                         bgcolor: "#2563eb",
                         transform: "translateY(-1px)",
@@ -404,17 +454,19 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                   </Button>
                   <Button
                     variant="outlined"
-                    size="large"
+                    size={isSmallMobile ? "medium" : "large"}
                     onClick={onShowUserGuide}
                     sx={{
-                      py: 2,
-                      px: 4,
-                      fontSize: "1rem",
+                      py: { xs: 1.5, sm: 2 },
+                      px: { xs: 3, sm: 4 },
+                      fontSize: { xs: "0.875rem", sm: "1rem" },
                       fontWeight: 600,
                       borderRadius: 2,
                       borderColor: "#d1d5db",
                       color: "#374151",
                       textTransform: "none",
+                      width: { xs: "100%", sm: "auto" },
+                      maxWidth: { xs: "280px", sm: "none" },
                       "&:hover": {
                         borderColor: "#9ca3af",
                         bgcolor: "#f9fafb",
@@ -426,15 +478,20 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                 </Stack>
 
                 <Stack
-                  direction="row"
-                  spacing={4}
-                  sx={{ color: "#9ca3af", fontSize: "0.875rem" }}
+                  direction={{ xs: "column", sm: "row" }}
+                  spacing={{ xs: 2, sm: 4 }}
+                  sx={{ 
+                    color: "#9ca3af", 
+                    fontSize: { xs: "0.8125rem", sm: "0.875rem" },
+                    alignItems: "center",
+                    justifyContent: { xs: "center", md: "flex-start" }
+                  }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Box
                       sx={{
-                        width: 8,
-                        height: 8,
+                        width: { xs: 6, sm: 8 },
+                        height: { xs: 6, sm: 8 },
                         borderRadius: "50%",
                         bgcolor: "#10b981",
                       }}
@@ -444,8 +501,8 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Box
                       sx={{
-                        width: 8,
-                        height: 8,
+                        width: { xs: 6, sm: 8 },
+                        height: { xs: 6, sm: 8 },
                         borderRadius: "50%",
                         bgcolor: "#3b82f6",
                       }}
@@ -532,15 +589,16 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                   }}
                 />
 
-                {/* 3D Globe */}
+                {/* 3D Globe - Mobile Responsive */}
                 <Box
                   sx={{
-                    width: { xs: 350, md: 400 },
-                    height: { xs: 350, md: 400 },
+                    width: { xs: 280, sm: 320, md: 400 },
+                    height: { xs: 280, sm: 320, md: 400 },
                     position: "relative",
                     zIndex: 2,
                     overflow: "hidden",
                     borderRadius: "40%",
+                    mx: "auto"
                   }}
                 >
                   <SimpleGlobe3D />
@@ -551,8 +609,8 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
         </Grid>
       </Container>
 
-      {/* Features Section */}
-      <Box sx={{ bgcolor: "#fafafa", py: 12, position: "relative" }}>
+      {/* Features Section - Mobile Responsive */}
+      <Box sx={{ bgcolor: "#fafafa", py: { xs: 6, sm: 8, md: 12 }, position: "relative" }}>
         {/* Additional floating elements for features section */}
         <Box
           sx={{
@@ -580,18 +638,19 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
             zIndex: 0,
           }}
         />
-        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1, px: { xs: 2, sm: 3 } }}>
           <Fade in timeout={1500}>
             <div>
               <Typography
-                variant="h4"
+                variant={isSmallMobile ? "h5" : "h4"}
                 component="h2"
                 textAlign="center"
                 gutterBottom
                 sx={{
-                  mb: 2,
+                  mb: { xs: 1, sm: 2 },
                   fontWeight: 700,
                   color: "#111827",
+                  fontSize: { xs: "1.5rem", sm: "2rem", md: "2.125rem" }
                 }}
               >
                 Powerful Features
@@ -600,10 +659,12 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                 variant="body1"
                 textAlign="center"
                 sx={{
-                  mb: 8,
+                  mb: { xs: 4, sm: 6, md: 8 },
                   color: "#6b7280",
-                  maxWidth: 600,
+                  maxWidth: { xs: "100%", sm: 600 },
                   mx: "auto",
+                  fontSize: { xs: "0.875rem", sm: "1rem" },
+                  px: { xs: 2, sm: 0 }
                 }}
               >
                 Everything you need to understand and visualize seismic activity
@@ -612,7 +673,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
             </div>
           </Fade>
 
-          <Grid container spacing={4}>
+          <Grid container spacing={{ xs: 3, sm: 4 }}>
             {features.map((feature, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <Fade in timeout={1500 + index * 200}>
@@ -632,12 +693,12 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                         overflow: "visible",
                       }}
                     >
-                      <CardContent sx={{ p: 4, textAlign: "center" }}>
+                      <CardContent sx={{ p: { xs: 3, sm: 4 }, textAlign: "center" }}>
                         <Box
                           sx={{
-                            mb: 3,
-                            width: 64,
-                            height: 64,
+                            mb: { xs: 2, sm: 3 },
+                            width: { xs: 48, sm: 56, md: 64 },
+                            height: { xs: 48, sm: 56, md: 64 },
                             borderRadius: 2,
                             bgcolor: `${feature.color}15`,
                             display: "flex",
@@ -647,17 +708,18 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                           }}
                         >
                           {React.cloneElement(feature.icon, {
-                            sx: { fontSize: 32, color: feature.color },
+                            sx: { fontSize: { xs: 24, sm: 28, md: 32 }, color: feature.color },
                           })}
                         </Box>
                         <Typography
-                          variant="h6"
+                          variant={isSmallMobile ? "subtitle1" : "h6"}
                           component="h3"
                           gutterBottom
                           sx={{
                             fontWeight: 600,
                             color: "#111827",
-                            mb: 2,
+                            mb: { xs: 1, sm: 2 },
+                            fontSize: { xs: "1rem", sm: "1.125rem", md: "1.25rem" }
                           }}
                         >
                           {feature.title}
@@ -667,6 +729,7 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                           sx={{
                             lineHeight: 1.6,
                             color: "#6b7280",
+                            fontSize: { xs: "0.8125rem", sm: "0.875rem" }
                           }}
                         >
                           {feature.description}
@@ -680,10 +743,10 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
           </Grid>
         </Container>
       </Box>
-      {/* Footer */}
+      {/* Footer - Mobile Responsive */}
       <Box
         sx={{
-          py: 8,
+          py: { xs: 4, sm: 6, md: 8 },
           borderTop: "1px solid #e5e7eb",
           bgcolor: "#111827",
           position: "relative",
@@ -717,23 +780,38 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
             zIndex: 0,
           }}
         />
-        <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="center">
+        <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 } }}>
+          <Grid container spacing={{ xs: 3, sm: 4 }} alignItems="center">
             <Grid item xs={12} md={6}>
               <Box
-                sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}
+                sx={{ 
+                  display: "flex", 
+                  alignItems: "center", 
+                  gap: { xs: 1.5, sm: 2 }, 
+                  mb: { xs: 1.5, sm: 2 },
+                  justifyContent: { xs: "center", md: "flex-start" }
+                }}
               >
-                <EarthIcon sx={{ fontSize: 28, color: "#3b82f6" }} />
+                <EarthIcon sx={{ fontSize: { xs: 24, sm: 28 }, color: "#3b82f6" }} />
                 <Typography
-                  variant="h6"
-                  sx={{ fontWeight: 700, color: "white" }}
+                  variant={isSmallMobile ? "subtitle1" : "h6"}
+                  sx={{ 
+                    fontWeight: 700, 
+                    color: "white",
+                    fontSize: { xs: "1rem", sm: "1.125rem", md: "1.25rem" }
+                  }}
                 >
                   Earthquake Visualizer
                 </Typography>
               </Box>
               <Typography
                 variant="body2"
-                sx={{ color: "#9ca3af", lineHeight: 1.6 }}
+                sx={{ 
+                  color: "#9ca3af", 
+                  lineHeight: 1.6,
+                  textAlign: { xs: "center", md: "left" },
+                  fontSize: { xs: "0.8125rem", sm: "0.875rem" }
+                }}
               >
                 Real-time earthquake visualization and analysis platform for
                 educational purposes. Data provided by USGS Earthquake Hazards
@@ -741,34 +819,56 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
               </Typography>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Box sx={{ textAlign: { xs: "left", md: "right" } }}>
-                <Typography variant="body2" sx={{ color: "#9ca3af", mb: 2 }}>
+              <Box sx={{ textAlign: { xs: "center", md: "right" } }}>
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    color: "#9ca3af", 
+                    mb: { xs: 1.5, sm: 2 },
+                    fontSize: { xs: "0.8125rem", sm: "0.875rem" }
+                  }}
+                >
                   Built for students, researchers, and seismology enthusiasts
                 </Typography>
                 <Stack
                   direction="row"
-                  spacing={2}
-                  sx={{ justifyContent: { xs: "flex-start", md: "flex-end" } }}
+                  spacing={{ xs: 1, sm: 2 }}
+                  sx={{ 
+                    justifyContent: { xs: "center", md: "flex-end" },
+                    flexWrap: "wrap",
+                    gap: 1
+                  }}
                 >
                   <Chip
                     label="Open Source"
                     size="small"
-                    sx={{ bgcolor: "#374151", color: "#d1d5db" }}
+                    sx={{ 
+                      bgcolor: "#374151", 
+                      color: "#d1d5db",
+                      fontSize: { xs: "0.75rem", sm: "0.8125rem" }
+                    }}
                   />
                   <Chip
                     label="Educational"
                     size="small"
-                    sx={{ bgcolor: "#374151", color: "#d1d5db" }}
+                    sx={{ 
+                      bgcolor: "#374151", 
+                      color: "#d1d5db",
+                      fontSize: { xs: "0.75rem", sm: "0.8125rem" }
+                    }}
                   />
                 </Stack>
               </Box>
             </Grid>
           </Grid>
-          <Divider sx={{ my: 4, borderColor: "#374151" }} />
+          <Divider sx={{ my: { xs: 3, sm: 4 }, borderColor: "#374151" }} />
           <Typography
             variant="body2"
             textAlign="center"
-            sx={{ color: "#6b7280" }}
+            sx={{ 
+              color: "#6b7280",
+              fontSize: { xs: "0.8125rem", sm: "0.875rem" }
+            }}
           >
             © 2024 Earthquake Visualizer. Built with React and Material-UI.
           </Typography>
