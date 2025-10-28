@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "mui-docs": {
-      "command": "uvx",
+      "command": "npx",
       "args": ["mui-mcp-server@latest"],
       "env": {
         "FASTMCP_LOG_LEVEL": "ERROR"
@@ -19,7 +19,7 @@
       ]
     },
     "react-docs": {
-      "command": "uvx",
+      "command": "npx",
       "args": ["react-mcp-server@latest"],
       "env": {
         "FASTMCP_LOG_LEVEL": "ERROR"
@@ -33,7 +33,7 @@
       ]
     },
     "web-docs": {
-      "command": "uvx",
+      "command": "npx",
       "args": ["mdn-mcp-server@latest"],
       "env": {
         "FASTMCP_LOG_LEVEL": "ERROR"
@@ -44,6 +44,36 @@
         "get_mdn_content",
         "search_css",
         "get_css_docs"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-playwright"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "playwright_screenshot",
+        "playwright_click",
+        "playwright_fill",
+        "playwright_navigate",
+        "playwright_get_text"
+      ]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": ""
+      },
+      "disabled": false,
+      "autoApprove": [
+        "search_repositories",
+        "get_repository",
+        "list_issues",
+        "get_issue",
+        "create_issue"
       ]
     }
   },
