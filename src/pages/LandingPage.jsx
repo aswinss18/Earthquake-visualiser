@@ -276,10 +276,8 @@ const LandingPage = ({ onGetStarted, onShowUserGuide }) => {
                     height: { xs: 350, md: 400 },
                     position: 'relative',
                     zIndex: 2,
-                    borderRadius: 2,
                     overflow: 'hidden',
-                     borderRadius: '40%',
-              
+                    borderRadius: '40%'
                   }}
                 >
                   <SimpleGlobe3D />
