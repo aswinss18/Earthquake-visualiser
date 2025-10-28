@@ -2,7 +2,7 @@
  * Settings Dialog Component
  */
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -23,18 +23,18 @@ import {
   Alert,
   Paper,
   useTheme,
-  IconButton
-} from '@mui/material';
+  IconButton,
+} from "@mui/material";
 import {
   Close as CloseIcon,
   Refresh as RefreshIcon,
   Notifications as NotificationsIcon,
   Map as MapIcon,
   Analytics as AnalyticsIcon,
-  Palette as PaletteIcon
-} from '@mui/icons-material';
-import { useAppSelector, useAppDispatch } from '../../app/hooks.js';
-import { useTheme as useCustomTheme } from '../../contexts/ThemeContext.jsx';
+  Palette as PaletteIcon,
+} from "@mui/icons-material";
+import { useAppSelector, useAppDispatch } from "../../app/hooks.js";
+import { useTheme as useCustomTheme } from "../../contexts/ThemeContext.jsx";
 
 const SettingsDialog = ({ open, onClose }) => {
   const theme = useTheme();
@@ -51,23 +51,26 @@ const SettingsDialog = ({ open, onClose }) => {
     showClusters: true,
     animateMarkers: true,
     maxEarthquakes: 1000,
-    defaultMapLayer: 'openstreetmap',
+    defaultMapLayer: "openstreetmap",
     showAnalytics: true,
     compactView: false,
   });
 
   const handleSettingChange = (setting) => (event) => {
-    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-    setSettings(prev => ({ ...prev, [setting]: value }));
+    const value =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+    setSettings((prev) => ({ ...prev, [setting]: value }));
   };
 
   const handleSliderChange = (setting) => (event, newValue) => {
-    setSettings(prev => ({ ...prev, [setting]: newValue }));
+    setSettings((prev) => ({ ...prev, [setting]: newValue }));
   };
 
   const handleSave = () => {
     // Here you would dispatch actions to save settings
-    console.log('Saving settings:', settings);
+    console.log("Saving settings:", settings);
     onClose();
   };
 
@@ -81,7 +84,7 @@ const SettingsDialog = ({ open, onClose }) => {
       showClusters: true,
       animateMarkers: true,
       maxEarthquakes: 1000,
-      defaultMapLayer: 'openstreetmap',
+      defaultMapLayer: "openstreetmap",
       showAnalytics: true,
       compactView: false,
     });
@@ -96,22 +99,28 @@ const SettingsDialog = ({ open, onClose }) => {
       PaperProps={{
         sx: {
           borderRadius: 2,
-          bgcolor: 'background.default',
-        }
+          bgcolor: "background.default",
+        },
       }}
     >
-      <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <DialogTitle
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <Typography variant="h6" component="h2">
           Application Settings
         </Typography>
-        <IconButton 
-          onClick={onClose} 
+        <IconButton
+          onClick={onClose}
           size="small"
           sx={{
-            color: 'text.primary',
-            '&:hover': {
-              bgcolor: 'action.hover'
-            }
+            color: "text.primary",
+            "&:hover": {
+              bgcolor: "action.hover",
+            },
           }}
         >
           <CloseIcon />
@@ -119,11 +128,11 @@ const SettingsDialog = ({ open, onClose }) => {
       </DialogTitle>
 
       <DialogContent>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
           {/* Theme Settings */}
-          <Paper sx={{ p: 2, bgcolor: 'background.paper' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <PaletteIcon sx={{ mr: 1, color: 'primary.main' }} />
+          <Paper sx={{ p: 2, bgcolor: "background.paper" }}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+              <PaletteIcon sx={{ mr: 1, color: "primary.main" }} />
               <Typography variant="h6">Theme & Appearance</Typography>
             </Box>
             <FormGroup>
@@ -137,14 +146,13 @@ const SettingsDialog = ({ open, onClose }) => {
                 }
                 label="Dark mode"
               />
-              
             </FormGroup>
           </Paper>
 
           {/* Data Refresh Settings */}
-          <Paper sx={{ p: 2, bgcolor: 'background.paper' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <RefreshIcon sx={{ mr: 1, color: 'primary.main' }} />
+          <Paper sx={{ p: 2, bgcolor: "background.paper" }}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+              <RefreshIcon sx={{ mr: 1, color: "primary.main" }} />
               <Typography variant="h6">Data Updates</Typography>
             </Box>
             <FormGroup sx={{ gap: 2 }}>
@@ -152,7 +160,7 @@ const SettingsDialog = ({ open, onClose }) => {
                 control={
                   <Switch
                     checked={settings.autoRefresh}
-                    onChange={handleSettingChange('autoRefresh')}
+                    onChange={handleSettingChange("autoRefresh")}
                     color="primary"
                   />
                 }
@@ -164,7 +172,7 @@ const SettingsDialog = ({ open, onClose }) => {
                   <Select
                     value={settings.refreshInterval}
                     label="Refresh interval"
-                    onChange={handleSettingChange('refreshInterval')}
+                    onChange={handleSettingChange("refreshInterval")}
                   >
                     <MenuItem value={60000}>1 minute</MenuItem>
                     <MenuItem value={300000}>5 minutes</MenuItem>
@@ -179,14 +187,14 @@ const SettingsDialog = ({ open, onClose }) => {
                 </Typography>
                 <Slider
                   value={settings.maxEarthquakes}
-                  onChange={handleSliderChange('maxEarthquakes')}
+                  onChange={handleSliderChange("maxEarthquakes")}
                   min={100}
                   max={5000}
                   step={100}
                   marks={[
-                    { value: 100, label: '100' },
-                    { value: 1000, label: '1K' },
-                    { value: 5000, label: '5K' }
+                    { value: 100, label: "100" },
+                    { value: 1000, label: "1K" },
+                    { value: 5000, label: "5K" },
                   ]}
                   sx={{ maxWidth: 300 }}
                 />
@@ -195,9 +203,9 @@ const SettingsDialog = ({ open, onClose }) => {
           </Paper>
 
           {/* Map Settings */}
-          <Paper sx={{ p: 2, bgcolor: 'background.paper' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <MapIcon sx={{ mr: 1, color: 'primary.main' }} />
+          <Paper sx={{ p: 2, bgcolor: "background.paper" }}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+              <MapIcon sx={{ mr: 1, color: "primary.main" }} />
               <Typography variant="h6">Map Settings</Typography>
             </Box>
             <FormGroup sx={{ gap: 2 }}>
@@ -206,7 +214,7 @@ const SettingsDialog = ({ open, onClose }) => {
                 <Select
                   value={settings.defaultMapLayer}
                   label="Default map layer"
-                  onChange={handleSettingChange('defaultMapLayer')}
+                  onChange={handleSettingChange("defaultMapLayer")}
                 >
                   <MenuItem value="openstreetmap">OpenStreetMap</MenuItem>
                   <MenuItem value="satellite">Satellite</MenuItem>
@@ -217,7 +225,7 @@ const SettingsDialog = ({ open, onClose }) => {
                 control={
                   <Switch
                     checked={settings.showClusters}
-                    onChange={handleSettingChange('showClusters')}
+                    onChange={handleSettingChange("showClusters")}
                     color="primary"
                   />
                 }
@@ -227,7 +235,7 @@ const SettingsDialog = ({ open, onClose }) => {
                 control={
                   <Switch
                     checked={settings.animateMarkers}
-                    onChange={handleSettingChange('animateMarkers')}
+                    onChange={handleSettingChange("animateMarkers")}
                     color="primary"
                   />
                 }
@@ -237,9 +245,9 @@ const SettingsDialog = ({ open, onClose }) => {
           </Paper>
 
           {/* Notifications Settings */}
-          <Paper sx={{ p: 2, bgcolor: 'background.paper' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <NotificationsIcon sx={{ mr: 1, color: 'primary.main' }} />
+          <Paper sx={{ p: 2, bgcolor: "background.paper" }}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+              <NotificationsIcon sx={{ mr: 1, color: "primary.main" }} />
               <Typography variant="h6">Notifications & Alerts</Typography>
             </Box>
             <FormGroup sx={{ gap: 2 }}>
@@ -247,7 +255,7 @@ const SettingsDialog = ({ open, onClose }) => {
                 control={
                   <Switch
                     checked={settings.showNotifications}
-                    onChange={handleSettingChange('showNotifications')}
+                    onChange={handleSettingChange("showNotifications")}
                     color="primary"
                   />
                 }
@@ -257,7 +265,7 @@ const SettingsDialog = ({ open, onClose }) => {
                 control={
                   <Switch
                     checked={settings.soundAlerts}
-                    onChange={handleSettingChange('soundAlerts')}
+                    onChange={handleSettingChange("soundAlerts")}
                     color="primary"
                   />
                 }
@@ -269,15 +277,15 @@ const SettingsDialog = ({ open, onClose }) => {
                 </Typography>
                 <Slider
                   value={settings.magnitudeThreshold}
-                  onChange={handleSliderChange('magnitudeThreshold')}
+                  onChange={handleSliderChange("magnitudeThreshold")}
                   min={3.0}
                   max={8.0}
                   step={0.5}
                   marks={[
-                    { value: 3.0, label: '3.0' },
-                    { value: 5.0, label: '5.0' },
-                    { value: 7.0, label: '7.0' },
-                    { value: 8.0, label: '8.0' }
+                    { value: 3.0, label: "3.0" },
+                    { value: 5.0, label: "5.0" },
+                    { value: 7.0, label: "7.0" },
+                    { value: 8.0, label: "8.0" },
                   ]}
                   sx={{ maxWidth: 300 }}
                 />
@@ -286,9 +294,9 @@ const SettingsDialog = ({ open, onClose }) => {
           </Paper>
 
           {/* Analytics Settings */}
-          <Paper sx={{ p: 2, bgcolor: 'background.paper' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <AnalyticsIcon sx={{ mr: 1, color: 'primary.main' }} />
+          <Paper sx={{ p: 2, bgcolor: "background.paper" }}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+              <AnalyticsIcon sx={{ mr: 1, color: "primary.main" }} />
               <Typography variant="h6">Analytics & Features</Typography>
             </Box>
             <FormGroup>
@@ -296,7 +304,7 @@ const SettingsDialog = ({ open, onClose }) => {
                 control={
                   <Switch
                     checked={settings.showAnalytics}
-                    onChange={handleSettingChange('showAnalytics')}
+                    onChange={handleSettingChange("showAnalytics")}
                     color="primary"
                   />
                 }
@@ -306,7 +314,8 @@ const SettingsDialog = ({ open, onClose }) => {
           </Paper>
 
           <Alert severity="info" sx={{ mt: 2 }}>
-            Settings are stored locally in your browser and will persist between sessions.
+            Settings are stored locally in your browser and will persist between
+            sessions.
           </Alert>
         </Box>
       </DialogContent>
@@ -315,9 +324,7 @@ const SettingsDialog = ({ open, onClose }) => {
         <Button onClick={handleReset} color="secondary">
           Reset to Defaults
         </Button>
-        <Button onClick={onClose}>
-          Cancel
-        </Button>
+        <Button onClick={onClose}>Cancel</Button>
         <Button onClick={handleSave} variant="contained">
           Save Settings
         </Button>

@@ -80,6 +80,18 @@
   .leaflet-container {
     @apply w-full h-full rounded-lg;
     font-family: inherit;
+    overflow: hidden !important;
+    background-color: #a8dadc;
+  }
+  
+  /* Prevent map from showing empty space/margins */
+  .leaflet-container .leaflet-tile-pane {
+    overflow: hidden;
+  }
+  
+  .leaflet-container .leaflet-tile {
+    max-width: none !important;
+    max-height: none !important;
   }
   
   /* Custom marker cluster styles */

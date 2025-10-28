@@ -62,7 +62,10 @@ const mapSlice = createSlice({
     updateMapView: (state, action) => {
       const { center, zoom, bounds } = action.payload;
       if (center) state.center = center;
-      if (zoom !== undefined) state.zoom = zoom;
+      if (zoom !== undefined) {
+        // Constrain zoom within valid bounds
+        state.zoom = Math.max(MAP_CONFIG.MIN_ZOOM, Math.min(MAP_CONFIG.MAX_ZOOM, zoom));
+      }
       if (bounds) state.bounds = bounds;
       state.lastInteraction = Date.now();
     },
@@ -173,7 +176,8 @@ const mapSlice = createSlice({
       const { coordinates, zoom = 8 } = action.payload;
       if (coordinates && coordinates.lat && coordinates.lng) {
         state.center = { lat: coordinates.lat, lng: coordinates.lng };
-        state.zoom = zoom;
+        // Constrain zoom within valid bounds
+        state.zoom = Math.max(MAP_CONFIG.MIN_ZOOM, Math.min(MAP_CONFIG.MAX_ZOOM, zoom));
         state.lastInteraction = Date.now();
       }
     },

@@ -27,6 +27,7 @@ import {
   toggleUserLocation,
   setBaseLayer
 } from '../../features/map/mapSlice.js';
+import { MAP_CONFIG } from '../../utils/constants.js';
 import EarthquakeMarkers from './EarthquakeMarkers.jsx';
 import UserLocationMarker from './UserLocationMarker.jsx';
 
@@ -48,9 +49,18 @@ const MapEventHandler = () => {
       const center = map.getCenter();
       const zoom = map.getZoom();
       
+      // Ensure zoom stays within bounds
+      const constrainedZoom = Math.max(MAP_CONFIG.MIN_ZOOM, Math.min(MAP_CONFIG.MAX_ZOOM, zoom));
+      
+      // Additional check: if zoom is too low and showing margins, force higher zoom
+      if (constrainedZoom < 2) {
+        map.setZoom(2);
+        return;
+      }
+      
       dispatch(updateMapView({
         center: { lat: center.lat, lng: center.lng },
-        zoom: zoom,
+        zoom: constrainedZoom,
         bounds: {
           north: bounds.getNorth(),
           south: bounds.getSouth(),
@@ -61,7 +71,29 @@ const MapEventHandler = () => {
     },
     zoomend: () => {
       const zoom = map.getZoom();
-      dispatch(updateMapView({ zoom }));
+      const constrainedZoom = Math.max(MAP_CONFIG.MIN_ZOOM, Math.min(MAP_CONFIG.MAX_ZOOM, zoom));
+      
+      // Force minimum zoom of 2 to prevent margins
+      const finalZoom = Math.max(2, constrainedZoom);
+      
+      // If zoom was constrained, update the map
+      if (finalZoom !== zoom) {
+        map.setZoom(finalZoom);
+      }
+      
+      dispatch(updateMapView({ zoom: finalZoom }));
+    },
+    zoomstart: () => {
+      // Prevent zooming below level 2
+      const currentZoom = map.getZoom();
+      if (currentZoom <= 2) {
+        // Cancel the zoom if it would go below 2
+        setTimeout(() => {
+          if (map.getZoom() < 2) {
+            map.setZoom(2);
+          }
+        }, 0);
+      }
     }
   });
 
@@ -208,14 +240,21 @@ const LeafletMap = ({ height = '500px' }) => {
       <MapContainer
         ref={mapRef}
         center={[mapState.center.lat, mapState.center.lng]}
-        zoom={mapState.zoom}
+        zoom={Math.max(2, mapState.zoom)}
+        minZoom={2}
+        maxZoom={MAP_CONFIG.MAX_ZOOM}
         style={{ height: '100%', width: '100%' }}
         zoomControl={false}
         attributionControl={true}
+        worldCopyJump={true}
+        maxBounds={[[-85, -180], [85, 180]]}
+        maxBoundsViscosity={1.0}
       >
         <TileLayer
           url={tileLayerOptions[mapState.baseLayer].url}
           attribution={tileLayerOptions[mapState.baseLayer].attribution}
+          noWrap={false}
+          bounds={[[-85, -180], [85, 180]]}
         />
         
         <MapEventHandler />

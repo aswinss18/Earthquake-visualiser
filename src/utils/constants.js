@@ -51,6 +51,7 @@ export const MAP_CONFIG = {
     parseFloat(import.meta.env.VITE_DEFAULT_MAP_CENTER_LNG) || 0
   ],
   DEFAULT_ZOOM: parseInt(import.meta.env.VITE_DEFAULT_MAP_ZOOM) || 2,
+  MIN_ZOOM: parseInt(import.meta.env.VITE_MIN_MAP_ZOOM) || 2,
   MAX_ZOOM: parseInt(import.meta.env.VITE_MAX_MAP_ZOOM) || 18,
   TILE_LAYER: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   ATTRIBUTION: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
